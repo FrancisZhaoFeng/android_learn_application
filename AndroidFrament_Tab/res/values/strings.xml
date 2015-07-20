@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroidFrament_Tab</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="message_select">消息</string>
+    <string name="contacts_select">联系人</string>
+    <string name="news_select">动态</string>
+    <string name="setting_select">设置</string>
+    <string name="message_content">这里是消息</string>
+    <string name="contacts_content">这里是联系人</string>
+    <string name="news_content">这里是动态</string>
+    <string name="setting_content">这里是设置</string>
+
+</resources>
