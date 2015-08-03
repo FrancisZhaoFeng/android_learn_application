@@ -11,36 +11,58 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * @author zhaoguofeng
+ * 
+ */
 public class MainActivity extends Activity implements OnClickListener {
 
+	/**
+	 * 用于展示的Fragment
+	 */
 	private MessageFragment messageFragment;
 	private ContactsFragment contactsFragment;
 	private NewsFragment newsFragment;
 	private SettingFragment settingFragment;
+	/**
+	 * 布局界面
+	 */
 	private View messageLayout;
 	private View contactsLayout;
 	private View newsLayout;
 	private View settingLayout;
+	/**
+	 * 在Tab布局中显示的图标，点击后变色，通过setImageResoure(R.id.)设置
+	 */
 	private ImageView messageImage;
 	private ImageView contactsImage;
 	private ImageView newsImage;
 	private ImageView settingImage;
+	/**
+	 * 在Tab布局中显示的文字，点击后变色，通过setTextColor(Color.WHITE)设置
+	 */
 	private TextView messageText;
 	private TextView contactsText;
 	private TextView newsText;
 	private TextView settingText;
+	/**
+	 * 声明碎片管理
+	 */
 	private FragmentManager fragmentManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置app无标题效果
 		setContentView(R.layout.activity_main);
 		initView();
-		fragmentManager = getFragmentManager();
+		fragmentManager = getFragmentManager(); // 获取碎片管理
 		setTabSelection(0);
 	}
 
+	/**
+	 * 这里获取到每个需要用到的控件的实例，并给他们设置好必要的点击事件
+	 */
 	private void initView() {
 		messageLayout = this.findViewById(R.id.id_tab_message);
 		contactsLayout = this.findViewById(R.id.id_tab_contacts);
@@ -60,6 +82,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		settingLayout.setOnClickListener(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.id_tab_message:
@@ -81,19 +108,23 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	/**
+	 * @param index
+	 *            根据index值，设置显示的页面
+	 */
 	private void setTabSelection(int index) {
-		clearSelection();
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		hideFragments(transaction);
+		clearSelection(); // 每次选中之前清楚上次的选中状态
+		FragmentTransaction transaction = fragmentManager.beginTransaction();  //开启一个Fragment事务
+		hideFragments(transaction);  //隐藏所有的Fragment，以防多个Fragment显示在界面上
 		switch (index) {
 		case 0:
 			messageImage.setImageResource(R.drawable.message_selected);
 			messageText.setTextColor(Color.WHITE);
 			if (messageFragment == null) {
-				messageFragment = new MessageFragment();
+				messageFragment = new MessageFragment();  //如果当前Fragment为空，则创建一个并添加到界面上
 				transaction.add(R.id.id_display_content, messageFragment);
 			} else {
-				transaction.show(messageFragment);
+				transaction.show(messageFragment);  //如果当前Fragment不为空，则直接将它显示出来
 			}
 			break;
 		case 1:
