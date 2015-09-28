@@ -23,7 +23,7 @@ public class OnAccessibility extends AccessibilityService {
 
 	private void processOnAyEvent() {
 		AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
-		String[] keywords = { "确定", "android:id/button1" };
+		String[] keywords = { "确定", "允许","取消","退出","不同意","拒绝","更新","桌面","Flyme桌面","android:id/button1" };
 		if (nodeInfo != null) {
 			for (String keyword : keywords) {
 				List<AccessibilityNodeInfo> setNode;
