@@ -22,7 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.meizu.Listview_Adpater.ArrayAdapterAty"></activity>
+        <activity android:name="com.meizu.Listview_Adpater.ArrayAdapterAty" >
+        </activity>
+        <activity android:name="com.meizu.Listview_Adpater.SimpleAdapterAty" >
+        </activity>
+        <activity android:name="com.meizu.Listview_Adpater.BaseAdapterAty" >
+        </activity>
     </application>
 
 </manifest>

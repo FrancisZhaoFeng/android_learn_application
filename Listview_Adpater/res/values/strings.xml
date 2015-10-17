@@ -7,5 +7,6 @@
     <string name="ArrayAdapter">ArrayAdapter</string>
     <string name="SimpleAdapter">SimpleAdapter</string>
     <string name="BaseAdapter">BaseAdapter</string>
+    <string name="点击">点击</string>
 
 </resources>
