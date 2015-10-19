@@ -7,5 +7,9 @@
     <string name="intent_transmit">通过intent传输数据给另一个intent</string>
     <string name="contact">联系人</string>
     <string name="HomeScreen">HomeScreen</string>
+    <string name="search">search</string>
+    <string name="static_broad">静态广播</string>
+    <string name="dynamic_broad">动态广播</string>
+    
 
 </resources>

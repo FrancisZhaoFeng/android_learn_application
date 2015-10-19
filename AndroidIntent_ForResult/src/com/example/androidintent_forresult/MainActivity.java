@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
 	private EditText edtTxtNum2;
 	private EditText edtTxtNum3;
 	private Button btnCommit;
+	private final static String Tag = "MainActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

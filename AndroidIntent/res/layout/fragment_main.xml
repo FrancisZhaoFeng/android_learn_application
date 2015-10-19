@@ -5,6 +5,18 @@
     android:orientation="vertical" >
 
     <Button
+        android:id="@+id/btn_broad_static"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/static_broad" />
+
+    <Button
+        android:id="@+id/btn_broad_dynamic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dynamic_broad" />
+
+    <Button
         android:id="@+id/btn_intent_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,5 +33,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/HomeScreen" />
+
+    <Button
+        android:id="@+id/btn_intent_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search" />
 
 </LinearLayout>
