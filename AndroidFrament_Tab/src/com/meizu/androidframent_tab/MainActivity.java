@@ -113,7 +113,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	 *            根据index值，设置显示的页面
 	 */
 	private void setTabSelection(int index) {
-		clearSelection(); // 每次选中之前清楚上次的选中状态
+		clearSelection(); // 每次选中之前清除上次的选中状态
 		FragmentTransaction transaction = fragmentManager.beginTransaction();  //开启一个Fragment事务
 		hideFragments(transaction);  //隐藏所有的Fragment，以防多个Fragment显示在界面上
 		switch (index) {

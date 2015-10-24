@@ -34,7 +34,6 @@ public class Fragment2 extends Fragment {
 				// TODO Auto-generated method stub
 				tvFragment1 = (TextView) getActivity().findViewById(R.id.tv_fragment1_display);
 				Toast.makeText(getActivity(), tvFragment1.getText(), Toast.LENGTH_LONG).show();
-				;
 			}
 		});
 	}

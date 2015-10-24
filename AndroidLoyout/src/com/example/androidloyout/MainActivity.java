@@ -1,17 +1,25 @@
 package com.example.androidloyout;
 
+import java.util.Random;
+
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.Button;
+
+import com.example.aidlservice.MyAIDLService;
 
 public class MainActivity extends Activity {
+	public static String Tag = "MainActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,30 +31,38 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
+
+		private Button btn_bindService;
+		private Button btn_unBindService;
+		private Button btn_executeAIDL;
+		// 有remote的activity与service之间的联系,通过aidl联系
+		private MyAIDLService myAIDLService;
+		private ServiceConnection aidlConnection = new ServiceConnection() {
+			@Override
+			public void onServiceDisconnected(ComponentName name) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				// TODO Auto-generated method stub
+				myAIDLService = MyAIDLService.Stub.asInterface(service);
+				try {
+					int result = myAIDLService.plus(100, 25);
+					String upperStr = myAIDLService.toUpperCase("hello world!");
+					Log.d(Tag, "result is :" + result);
+					Log.d(Tag, "upperStr is :" + upperStr);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		};
 
 		public PlaceholderFragment() {
 		}
@@ -55,6 +71,47 @@ public class MainActivity extends Activity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 			return rootView;
+		}
+
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+			// TODO Auto-generated method stub
+			super.onActivityCreated(savedInstanceState);
+			btn_bindService = (Button) getActivity().findViewById(R.id.btn_test_aidlbingservice);
+			btn_unBindService = (Button) getActivity().findViewById(R.id.btn_test_unaidlbingservice);
+			btn_executeAIDL = (Button) getActivity().findViewById(R.id.btn_test_execute);
+			btn_bindService.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Log.d(Tag, "dfdf");
+					Intent intent = new Intent("com.example.aidlservice.MyAIDLService");
+					getActivity().bindService(intent, aidlConnection, BIND_AUTO_CREATE);
+				}
+			});
+			btn_unBindService.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					getActivity().unbindService(aidlConnection);
+				}
+			});
+			btn_executeAIDL.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stubs
+					try {
+						int a = new Random().nextInt(100), b = new Random().nextInt(100);
+						Log.d(Tag, a + "+" + b + "=" + myAIDLService.plus(a, b));
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
 		}
 	}
 

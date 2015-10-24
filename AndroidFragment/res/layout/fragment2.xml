@@ -16,7 +16,6 @@
         android:id="@+id/btn_fragment2_getdata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
         android:text="get fragment1 text" />
 
 </LinearLayout>
