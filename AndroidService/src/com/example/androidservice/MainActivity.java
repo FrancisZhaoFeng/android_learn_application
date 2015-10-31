@@ -45,7 +45,6 @@ public class MainActivity extends Activity {
 		private Button btn_aidlUnbindService;
 		
 		private MyService.MyBinder myBinder;
-		private MyAIDLService myAIDLService;
 		//没有remote的activity与service之间的联系
 		private ServiceConnection connection = new ServiceConnection() {
 			//方法onServiceDisconnected 和 onServiceConnected是activity 与service建立关联和解除关联时候调用
@@ -63,6 +62,7 @@ public class MainActivity extends Activity {
 				myBinder.startDownload();
 			}
 		};
+		private MyAIDLService myAIDLService;
 		//有remote的activity与service之间的联系,通过aidl联系
 		private ServiceConnection aidlConnection = new ServiceConnection() {
 			
