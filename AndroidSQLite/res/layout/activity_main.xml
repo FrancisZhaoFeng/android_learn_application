@@ -32,15 +32,6 @@
         android:onClick="@string/query"
         android:text="@string/query" />
 
-    <!--
-         <Button
-        android:id="@+id/btn_sql_querythecursor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="@string/queryTheCursor"
-        android:text="@string/queryTheCursor" />
-    -->
-
     <ListView
         android:id="@+id/lv_sql_list"
         android:layout_width="match_parent"

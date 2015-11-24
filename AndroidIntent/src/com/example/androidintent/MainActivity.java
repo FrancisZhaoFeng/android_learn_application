@@ -1,7 +1,6 @@
 package com.example.androidintent;
 
 import tools.Contants;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +35,7 @@ public class MainActivity extends Activity {
 		btnSearch = (Button) this.findViewById(R.id.btn_intent_search);
 		btnStaticBroad = (Button) this.findViewById(R.id.btn_broad_static);
 		btnDynamicBroad = (Button) this.findViewById(R.id.btn_broad_dynamic);
-		
+
 		btnDynamicBroad.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -135,8 +133,17 @@ public class MainActivity extends Activity {
 						// TODO Auto-generated method stub
 						String strMsg = intent.getStringExtra("msg");
 						Log.d(Tag, "DynamicBroadcast:" + strMsg);
-						Toast.makeText(context, "DynamicBroadcast:" + strMsg, Toast.LENGTH_SHORT).show();;
+						Toast.makeText(context, "DynamicBroadcast:" + strMsg, Toast.LENGTH_SHORT).show();
 					}
 				}, new IntentFilter(Contants.dbc));
+		
+		registerReceiver(new BroadcastReceiver() { // ¶¯Ì¬×¢²á¹ã²¥
+
+			public void onReceive(Context context, Intent intent) {
+				// TODO Auto-generated method stub
+				Log.d(Tag, "time change");
+				
+			}
+		}, new IntentFilter("android.intent.action.TIME_TICK"));
 	}
 }

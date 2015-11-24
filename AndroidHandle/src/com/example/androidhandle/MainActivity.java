@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,7 +47,6 @@ public class MainActivity extends Activity {
 				dialog = builder.create();
 				dialog.show();
 				((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-				;
 				new Thread(threadDown).start();
 			}
 		});
@@ -66,12 +64,13 @@ public class MainActivity extends Activity {
 			tv.setText(msg.getData().getString("status"));
 			switch (msg.arg1) {
 			case 0:
-				Log.e(Tag, "what:"+msg.what);
+				Log.e(Tag, "arg1:" + msg.arg1);
 				tv.setBackgroundColor(Color.rgb(131, 196, 125));
 				break;
 			case 1:
-				Log.e(Tag, "what:"+msg.what);
+				Log.e(Tag, "arg1:" + msg.arg1);
 				tv.setBackgroundColor(Color.rgb(247, 9, 171));
+				new Thread(threadDown).start();
 				break;
 			default:
 				break;
@@ -85,16 +84,15 @@ public class MainActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			try {
-				Thread.sleep(new Random().nextInt(5) * 1000);
-				Looper.prepare();
+				Thread.sleep((new Random().nextInt(5) + 3) * 1000);
 				int num = new Random().nextInt(2);
 				Message message = new Message();
 				Bundle bundle = new Bundle();
 				message.arg1 = num;
 				if (num == 0) {
-					bundle.putString("status", "下载成功");
+					bundle.putString("status", "下载成功&&下载成功&&下载成功&&下载成功&&下载成功&&下载成功&&下载成功");
 				} else {
-					bundle.putString("status", "下载失败");
+					bundle.putString("status", "下载失败,重新下载中&&下载失败,重新下载中&&下载失败,重新下载中&&下载失败,重新下载中");
 				}
 				message.setData(bundle);
 				handler.sendMessage(message);

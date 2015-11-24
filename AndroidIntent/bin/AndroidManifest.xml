@@ -29,6 +29,12 @@
                 <action android:name="com.meizu.zhaoguofeng.staticbroadcast" />
             </intent-filter>
         </receiver>
+        
+        <receiver android:name="com.example.androidintent.TimeBroadcast" >
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_TICK" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

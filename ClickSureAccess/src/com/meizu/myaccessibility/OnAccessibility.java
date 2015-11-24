@@ -11,11 +11,6 @@ public class OnAccessibility extends AccessibilityService {
 
 	private int redNumber = 0;
 
-	// com.tencent.mm:id/wm 领取红包
-	// com.tencent.mm:id/aww 拆红包
-	// com.tencent.mm:id/f5 (个人获取红包详情界面，返回上一级箭头按钮)
-	// com.tencent.mm:id/awr (红包已被领取，返回上一级交叉按钮)
-
 	@Override
 	public void onAccessibilityEvent(AccessibilityEvent event) {
 		// TODO Auto-generated method stub
