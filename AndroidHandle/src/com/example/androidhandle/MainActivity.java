@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 	}
 
 	@SuppressLint("HandlerLeak")
-	Handler handler = new Handler() {
+	public Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub

@@ -22,7 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.androidservice.OtherActivity" />
 
         <service android:name="com.example.androidservice.MyService" />
         <service

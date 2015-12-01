@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 		}
-		Log.e(Tag, "onActivityCreated executed Process is :" + Process.myPid());
+		Log.e(Tag, "MainActivity executed Process is :" + Process.myPid());
 	}
 
 	/**
