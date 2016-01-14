@@ -48,18 +48,4 @@ public class PackageMgr {
             Log.i(Tag, "已安裝並且intent有效的包数：" + num);
         }
     }
-
-    public boolean checkActivity(String packageName) {
-        if (packageName == null || "".equals(packageName)) {
-            return false;
-        }
-        try {
-            packageManager.getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
-            return true;
-        } catch (NameNotFoundException e) {
-            // TODO Auto-generated catch block
-            return false;
-        }
-
-    }
 }

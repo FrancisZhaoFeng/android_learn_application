@@ -1,5 +1,7 @@
 package com.meizu.tools;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -33,9 +35,7 @@ public class ShellUtils {
 		return execCommand(commands == null ? null : commands.toArray(new String[] {}), isRoot, isNeedResultMsg);
 	}
 
-	@SuppressWarnings("unused")
 	public static String execCommand(String[] commands, boolean isRoot, boolean isNeedResultMsg) {
-		int result = -1;
 		if (commands == null || commands.length == 0) {
 			return null;
 		}
@@ -54,15 +54,12 @@ public class ShellUtils {
 				if (command == null) {
 					continue;
 				}
-
 				os.write(command.getBytes());
 				os.writeBytes(COMMAND_LINE_END);
 				os.flush();
 			}
 			os.writeBytes(COMMAND_EXIT);
 			os.flush();
-			result = process.waitFor();
-			// get command result
 			if (isNeedResultMsg) {
 				successMsg = new StringBuilder();
 				errorMsg = new StringBuilder();
@@ -98,6 +95,7 @@ public class ShellUtils {
 			if (process != null) {
 				process.destroy();
 			}
+			Log.d("error", errorMsg.toString());
 		}
 
 		return successMsg.toString();
