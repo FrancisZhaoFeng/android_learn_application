@@ -34,7 +34,7 @@ public class Person implements Parcelable {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	public Person(Parcel parcel) {
 		// TODO Auto-generated constructor stub
 		name = parcel.readString();

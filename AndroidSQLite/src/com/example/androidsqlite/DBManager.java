@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /**
  * @author zhaoguofeng
@@ -31,9 +32,11 @@ public class DBManager {
 	public void add(List<Person> persons) {
 		// TODO Auto-generated method stub
 		db.beginTransaction();
+		Log.e("df", "1");
 		try {
 			for (Person person : persons)
 				db.execSQL("insert into person values(null,?,?,?)", new Object[] { person.getName(), person.getAge(), person.getInfo() });
+			Log.e("df", "2");
 			db.setTransactionSuccessful();
 		} finally {
 			db.endTransaction();

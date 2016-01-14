@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.meizu.activity.PackageActivity"
+    tools:showIn="@layout/activity_package">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center">
+
+            <TextView
+                android:id="@+id/tv_appnum"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/edt_appnum"
+                android:layout_alignTop="@+id/edt_appnum"
+                android:gravity="center"
+                android:text="应用测试次数（c）:"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/edt_appnum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_appnum"
+                android:gravity="center"
+                android:inputType="number"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center">
+
+            <TextView
+                android:id="@+id/tv_activitynum"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/edt_activitynum"
+                android:layout_alignTop="@+id/edt_activitynum"
+                android:gravity="center"
+                android:text="界面dump次数（c）:"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/edt_activitynum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_activitynum"
+                android:gravity="center"
+                android:inputType="number"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center">
+
+            <TextView
+                android:id="@+id/tv_timenum"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/edt_timenum"
+                android:layout_alignTop="@+id/edt_timenum"
+                android:gravity="center"
+                android:text="每次dump间隔（s）:"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/edt_timenum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_timenum"
+                android:gravity="center"
+                android:inputType="number"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:padding="7dp">
+
+            <TextView
+                android:id="@+id/tv_reportnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="报告需要查看的元素"
+                android:textColor="#F83F7D"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/chb_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_reportnum"
+                android:layout_alignTop="@+id/tv_reportnum"
+                android:layout_marginLeft="33dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+
+
+        <ListView
+            android:id="@+id/lv_element"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="multipleChoice"
+            android:layout_marginBottom="5dp">
+        </ListView>
+    </LinearLayout>
+
+
+</RelativeLayout>

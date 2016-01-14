@@ -28,7 +28,6 @@ public class SimpleAdapterAty extends Activity {
 		// 定义一个动态数据
 		Intent intent = this.getIntent();
 		ArrayList<HashMap<String, Object>> listItem = (ArrayList<HashMap<String, Object>>) intent.getSerializableExtra("listView");
-		// ArrayList<HashMap<String, Object>> listItem = getListData();
 		// 动态数组中的数据源的键对应到定义布局的View中
 		String[] fromS = { "itemImage", "itemTitle", "itemDetail" };
 		int[] toS = { R.id.img_simple_pic, R.id.id_simple_title, R.id.id_simple_detail };
