@@ -103,7 +103,7 @@ public class PackageActivity extends AppCompatActivity {
     public void onBackPressed() {
         ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
                 PackageActivity.this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);//activity切换隐藏键盘
-        dbManager.close();
+        dbManager.close("PackageActivity");
         super.onBackPressed();
     }
 

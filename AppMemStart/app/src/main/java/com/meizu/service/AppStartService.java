@@ -114,7 +114,7 @@ public class AppStartService extends Service {
             htmlOut.creathtml(appMemMapInfosReport, Contants.HTML_PATH + Contants.HTML_NAME_CURRENT, Contants.USERHABITINFO.getMemData());
             htmlOut.openBrower(Contants.HTML_PATH + Contants.HTML_NAME_CURRENT, AppStartService.this);
             dbManager.selectAppMemInfoGetSize();
-            dbManager.close();
+            dbManager.close("AppStartService");
             Log.i(TAG, "打开app，测试应用启动内存结束");
         }
     };

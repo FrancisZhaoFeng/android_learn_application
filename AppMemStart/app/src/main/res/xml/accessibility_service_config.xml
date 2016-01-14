@@ -4,6 +4,6 @@
     android:description="@string/app_name"
     android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged"
     android:accessibilityFeedbackType="feedbackAllMask"
-    android:notificationTimeout="500"
+    android:notificationTimeout="200"
     android:accessibilityFlags=""
     android:canRetrieveWindowContent="true"/>

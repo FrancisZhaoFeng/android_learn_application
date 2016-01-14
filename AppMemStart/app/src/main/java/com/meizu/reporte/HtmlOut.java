@@ -23,7 +23,6 @@ import java.util.Map;
 public class HtmlOut {
     private String TAG = "HtmlOut";
     private List<String> showColumn;
-    List<Integer> showAvg = new ArrayList<>();
 
     public void creathtml(List<AppMemMapInfo> appMemMapInfos, String htmlName, List<String> showColums) {
         try {
@@ -51,7 +50,6 @@ public class HtmlOut {
             //中部
             String packName = "";
             int numPackName = 0;
-//            AppMemMapInfo tempAppMemMapInfos = appMemMapInfos.get(0);
             Map<String, Integer> tempAvgMap = new HashMap<>();
             for (int i = 0; i < appMemMapInfos.size(); i++) {
                 AppMemMapInfo appMemMapInfo = appMemMapInfos.get(i);
@@ -143,7 +141,6 @@ public class HtmlOut {
             bgcolor = "#FAEBD7";
         String strHtml = "";
         for (String column : showColumn) {
-            Log.i(TAG, "memoryInfoContent column：" + column);
             if (appMemMapInfo.getMapData().containsKey(column))
                 strHtml += "<td bgcolor='" + bgcolor + "' width=\"20%\">" + appMemMapInfo.getMapData().get(column) / time + "</td>\n";
             else
@@ -161,7 +158,6 @@ public class HtmlOut {
     }
 
     public void mkDirs(String sdPath) throws IOException {
-        Log.e("mkdir", sdPath);
         File file = new File(sdPath);
         if (!file.exists()) {
             file.mkdirs();

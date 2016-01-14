@@ -6,6 +6,7 @@ package com.meizu.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.meizu.common.Contants;
 
@@ -14,7 +15,7 @@ import com.meizu.common.Contants;
  * 
  */
 public class DBHelper extends SQLiteOpenHelper {
-	String TAG = "DBHelper";
+	private static String TAG = "DBHelper";
 	private static DBHelper dbHelper=null;
 
 	public DBHelper(Context context) {
@@ -24,7 +25,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	public static SQLiteDatabase getInstance(Context context){
 		if (dbHelper == null){
+			Log.i(TAG, "getInstance: dbHelper 是 null");
 			dbHelper = new DBHelper(context);
+		}else{
+			Log.i(TAG, "getInstance: dbHelper 不是 null");
 		}
 		return dbHelper.getWritableDatabase();
 	}

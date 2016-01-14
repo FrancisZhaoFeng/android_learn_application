@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         packgeMan.getPackageName(allPckInfos);
         //自动开启accibility服务
         Settings.Secure.putString(getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-                "con.meizu.appmemstart/com.meizu.tools.OnAccessibility");
+                "com.meizu.appmemstart/com.meizu.tools.OnAccessibility");
         Settings.Secure.putInt(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, 1);
     }
 
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onDestroy() {
-        dbManager.close();
+//        dbManager.close("MainActivity");
         super.onDestroy();
     }
 

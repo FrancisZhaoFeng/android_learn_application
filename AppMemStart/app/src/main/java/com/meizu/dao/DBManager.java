@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBManager {
-    String Tag = "DBManager";
+    private static String TAG = "DBManager";
     private DBHelper dbHelper;
     private static SQLiteDatabase db;
     /*--保存数据库语句--*/
@@ -35,8 +35,12 @@ public class DBManager {
 
     public static DBManager getInstance(Context context) {
         db = DBHelper.getInstance(context);
-        if (dbManager == null)
+        if (dbManager == null) {
+            Log.i(TAG, "getInstance: DBManager 是 null");
             dbManager = new DBManager();
+        } else {
+            Log.i(TAG, "getInstance: DBManager 不是 null");
+        }
         return dbManager;
     }
 
@@ -44,7 +48,7 @@ public class DBManager {
         db.beginTransaction();
         try {
             insertSql = "insert into appMemInfo values(null,?,?)";
-            Log.i(Tag, "插入数据库信息：" + appMemMapInfo.toString());
+            Log.i(TAG, "插入数据库信息：" + appMemMapInfo.toString());
             saveObject(insertSql, appMemMapInfo.getPackageName(), appMemMapInfo);
             db.setTransactionSuccessful();
         } finally {
@@ -57,7 +61,7 @@ public class DBManager {
         db.beginTransaction();
         try {
             selectSql = "select * from appMemInfo";
-            Log.i(Tag, "查询数据库语句：" + selectSql);
+            Log.i(TAG, "查询数据库语句：" + selectSql);
             mObjs = getObject(selectSql);
             db.setTransactionSuccessful();
         } finally {
@@ -74,7 +78,7 @@ public class DBManager {
             }
         }
         if (mObjs != null)
-            Log.i(Tag, "数据库共包含数据条数：" + mObjs.size() + ", " + packageName + "包含数据条数：" + appMemMapInfos.size());
+            Log.i(TAG, "数据库共包含数据条数：" + mObjs.size() + ", " + packageName + "包含数据条数：" + appMemMapInfos.size());
         return mObjs != null ? mObjs.size() : 0;
     }
 
@@ -82,7 +86,7 @@ public class DBManager {
         db.beginTransaction();
         try {
             deleteSql = "delete from " + tName;
-            Log.i(Tag, "删除数据语句：" + deleteSql);
+            Log.i(TAG, "删除数据语句：" + deleteSql);
             db.execSQL(deleteSql);
             db.setTransactionSuccessful();
         } finally {
@@ -96,7 +100,7 @@ public class DBManager {
         List<AppMemMapInfo> appMemMapInfos = new ArrayList<>();
         selectAppMemInfo("*", appMemMapInfos);
         for (AppMemMapInfo appMemMapInfo : appMemMapInfos) {
-            Log.i(Tag, "selectAppMemInfoGetSize(),数据库内容：" + appMemMapInfo.toString());
+            Log.i(TAG, "selectAppMemInfoGetSize(),数据库内容：" + appMemMapInfo.toString());
         }
         return appMemMapInfos.size();
     }
@@ -106,7 +110,7 @@ public class DBManager {
         try {
             insertSql = "insert into " + Contants.TABLE_NAME_USER + " values(null,?)";
             setDeleteSql(Contants.TABLE_NAME_USER, false);
-            Log.i(Tag, "insertUserHabitInfo(),插入数据库信息：" + userHabitInfo.toString());
+            Log.i(TAG, "insertUserHabitInfo(),插入数据库信息：" + userHabitInfo.toString());
             saveObject(insertSql, "", userHabitInfo);
             db.setTransactionSuccessful();
         } finally {
@@ -119,7 +123,7 @@ public class DBManager {
         db.beginTransaction();
         try {
             selectSql = "select * from " + Contants.TABLE_NAME_USER;
-            Log.i(Tag, "selectUserHabitInfo()，查询数据库语句：" + selectSql);
+            Log.i(TAG, "selectUserHabitInfo()，查询数据库语句：" + selectSql);
             mObjs = getObject(selectSql);
             db.setTransactionSuccessful();
         } finally {
@@ -185,10 +189,10 @@ public class DBManager {
         return objs;
     }
 
-    public void close() {
+    public void close(String call) {
         if (db != null) {
             db.close();
-            dbManager = null;
+            Log.i(TAG, "close: " + call + "调用数据库close");
         }
     }
 }
