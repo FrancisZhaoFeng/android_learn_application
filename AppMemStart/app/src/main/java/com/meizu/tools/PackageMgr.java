@@ -14,7 +14,7 @@ import com.meizu.domain.PckInfo;
 import java.util.List;
 
 public class PackageMgr {
-    private String Tag = "PackageMgr";
+    private String TAG = "PackageMgr";
     private PackageManager packageManager;
 
     public PackageMgr(Context context) {
@@ -29,7 +29,7 @@ public class PackageMgr {
             for (PackageInfo pInfo : pInfos) {
                 String pName = pInfo.packageName;
                 Intent intent = packageManager.getLaunchIntentForPackage(pName);
-                if (intent != null && !pName.contains("com.meizu.appmemstart") && !pName.contains("com.meizu.flyme.laun")) {
+                if (intent != null && !pName.contains("com.meizu.appmemstart") && !pName.contains("com.meizu.flyme.laun") && !pName.contains("com.android.providers.downloads.ui")) {
                     try {
                         ApplicationInfo appInfo = packageManager.getApplicationInfo(pName, PackageManager.GET_UNINSTALLED_PACKAGES);
                         String destopName = (String) packageManager.getApplicationLabel(appInfo);
@@ -37,7 +37,7 @@ public class PackageMgr {
                         Drawable icon = packageManager.getApplicationIcon(appInfo);
                         PckInfo pckInfo = new PckInfo(pName, destopName, versionName, icon, intent);
                         packageInfos.add(pckInfo);
-//                        Log.i(Tag + num, pckInfo.toString());
+                        Log.i(TAG, pckInfo.toString());
                         num++;
                     } catch (NameNotFoundException e) {
                         // TODO Auto-generated catch block
@@ -45,7 +45,7 @@ public class PackageMgr {
                     }
                 }
             }
-            Log.i(Tag, "已安裝並且intent有效的包数：" + num);
+            Log.i(TAG, "已安裝並且intent有效的包数：" + num);
         }
     }
 }

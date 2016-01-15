@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(MainActivity.this, AppStartService.class);
                 intent.putParcelableArrayListExtra("mainPckInfos", (ArrayList<? extends Parcelable>) mainPckInfos);
                 startService(intent);
-                stopService(intent);
+//                stopService(intent);
             }
         });
         setMainListView();

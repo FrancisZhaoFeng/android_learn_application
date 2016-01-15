@@ -1,5 +1,7 @@
 package com.example.androidintent;
 
+import com.example.staticbroadcast.SreenSB;
+
 import tools.Contants;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -29,6 +31,14 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
 
+//		registerReceiver(new SreenSB(), new IntentFilter(Intent.ACTION_SCREEN_ON));
+//		registerReceiver(new SreenSB(), new IntentFilter(Intent.ACTION_SCREEN_OFF));
+
+//		IntentFilter screenStateFilter = new IntentFilter();
+//		screenStateFilter.addAction(Intent.ACTION_SCREEN_ON);
+//		screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
+//		registerReceiver(SreenSB, screenStateFilter);
+		
 		btnNormal = (Button) this.findViewById(R.id.btn_intent_normal);
 		btnContact = (Button) this.findViewById(R.id.btn_intent_contact);
 		btnHome = (Button) this.findViewById(R.id.btn_intent_home);
@@ -132,18 +142,18 @@ public class MainActivity extends Activity {
 					public void onReceive(Context context, Intent intent) {
 						// TODO Auto-generated method stub
 						String strMsg = intent.getStringExtra("msg");
-						Log.d(Tag, "DynamicBroadcast:" + strMsg);
+						Log.i(Tag, "DynamicBroadcast:" + strMsg);
 						Toast.makeText(context, "DynamicBroadcast:" + strMsg, Toast.LENGTH_SHORT).show();
 					}
 				}, new IntentFilter(Contants.dbc));
-		
+
 		registerReceiver(new BroadcastReceiver() { // ¶¯Ì¬×¢²á¹ã²¥
 
-			public void onReceive(Context context, Intent intent) {
-				// TODO Auto-generated method stub
-				Log.d(Tag, "time change");
-				
-			}
-		}, new IntentFilter("android.intent.action.TIME_TICK"));
+					public void onReceive(Context context, Intent intent) {
+						// TODO Auto-generated method stub
+						Log.d(Tag, "time change");
+
+					}
+				}, new IntentFilter("android.intent.action.TIME_TICK"));
 	}
 }

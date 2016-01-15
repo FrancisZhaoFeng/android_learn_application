@@ -3,7 +3,10 @@ package com.example.androidservice;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Process;
@@ -18,6 +21,8 @@ public class MyService extends Service {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+		registerReceiver(mybroadcast, new IntentFilter(Intent.ACTION_SCREEN_ON));
+	      registerReceiver(mybroadcast, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 		// this.notificationBar(); // 前台service
 		Log.e(Tag, "MyService executed Process is :" + Process.myPid());
 	}
@@ -81,4 +86,22 @@ public class MyService extends Service {
 		notification.setLatestEventInfo(this, "这是同事标题", "这是通知内容", pendingIntent);
 		startForeground(1, notification);
 	}
+	
+	BroadcastReceiver mybroadcast = new BroadcastReceiver() {
+
+        //When Event is published, onReceive method is called
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+                Log.i("[BroadcastReceiver]", "MyReceiver");
+
+                if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+                    Log.i("[BroadcastReceiver]", "Screen ON");
+                }
+                else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+                    Log.i("[BroadcastReceiver]", "Screen OFF");
+                }
+
+        }
+    };
 }

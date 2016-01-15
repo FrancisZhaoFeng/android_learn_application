@@ -4,10 +4,14 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 
 import com.meizu.appmemstart.R;
@@ -28,11 +32,19 @@ public class AppStartService extends Service {
     private PackageManager packageManager;
     private GetMemInfo getMemInfo;
     private DBManager dbManager;
+    private PowerManager pm;
+    private PowerManager.WakeLock wl;
+
 
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
+
+        registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_ON));
+        registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
 
         this.notificationBar();
         getMemInfo = new GetMemInfo(this);
@@ -71,7 +83,8 @@ public class AppStartService extends Service {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification.Builder builder = new Notification.Builder(this)
                 .setAutoCancel(true)
-                .setContentTitle("AppMemStart通知....")
+                .setContentTitle("内存启动Record")
+                .setContentText("点点点，没效果啦...")
                 .setSmallIcon(R.drawable.ic_menu_camera)
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true);
@@ -89,7 +102,7 @@ public class AppStartService extends Service {
                 Log.i(TAG, "正在测试包：" + pckInfo.getPackageName());
                 int num = 1;
                 try {
-                    for (int i = 0; i < Contants.USERHABITINFO.getAppNum(); i++) {
+        roi            for (int i = 0; i < Contants.USERHABITINFO.getAppNum(); i++) {
                         startActivity(packageManager.getLaunchIntentForPackage(pckInfo.getPackageName()));
                         for (int j = 0; j < Contants.USERHABITINFO.getActivityNum(); j++) {
                             Log.i(TAG, "第" + (num++) + "次获取应用数据：" + pckInfo.getPackageName());
@@ -116,6 +129,33 @@ public class AppStartService extends Service {
             dbManager.selectAppMemInfoGetSize();
             dbManager.close("AppStartService");
             Log.i(TAG, "打开app，测试应用启动内存结束");
+            stopSelf();
+        }
+    };
+
+    BroadcastReceiver screenOffOn = new BroadcastReceiver() {
+
+        //When Event is published, onReceive method is called
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+
+            Log.i("[BroadcastReceiver]", "MyReceiver");
+            if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+                Log.i("[BroadcastReceiver]", "Screen ON");
+            }
+            else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+                Log.i("[BroadcastReceiver]", "Screen OFF");
+                wl.acquire();
+                wl.release();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ShellUtils.execCommand("input swipe 500 1300 500 100", false);
+            }
+
         }
     };
 }
