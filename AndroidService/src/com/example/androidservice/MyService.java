@@ -79,11 +79,11 @@ public class MyService extends Service {
 	@SuppressWarnings("deprecation")
 	private void notificationBar() {
 		// 创建一个Notification对象，第二个参数：内容显示时间：大约2秒，地点：屏幕上方
-		Notification notification = new Notification(R.drawable.ic_launcher, "通知yy到来", System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.ic_launcher, "", System.currentTimeMillis());
 		Intent notificationIntent = new Intent(this, MainActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 		// setLatestEventInfo 方法来为通知初始化布局和数据
-		notification.setLatestEventInfo(this, "这是同事标题", "这是通知内容", pendingIntent);
+		notification.setLatestEventInfo(this, "apptest", "不要点我", pendingIntent);
 		startForeground(1, notification);
 	}
 	

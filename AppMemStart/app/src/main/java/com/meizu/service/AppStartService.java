@@ -102,7 +102,7 @@ public class AppStartService extends Service {
                 Log.i(TAG, "正在测试包：" + pckInfo.getPackageName());
                 int num = 1;
                 try {
-        roi            for (int i = 0; i < Contants.USERHABITINFO.getAppNum(); i++) {
+                    for (int i = 0; i < Contants.USERHABITINFO.getAppNum(); i++) {
                         startActivity(packageManager.getLaunchIntentForPackage(pckInfo.getPackageName()));
                         for (int j = 0; j < Contants.USERHABITINFO.getActivityNum(); j++) {
                             Log.i(TAG, "第" + (num++) + "次获取应用数据：" + pckInfo.getPackageName());
