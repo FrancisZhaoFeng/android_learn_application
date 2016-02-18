@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.aidlservice.MyAIDLService;
+import com.example.service.AidlServeice;
+import com.example.service.ClientMyAidlService;
 
 public class MainActivity extends Activity {
 	public static String Tag = "MainActivity";
@@ -25,10 +27,17 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		Log.e(Tag, "onCreate");
+		
+		Intent intent = new Intent(MainActivity.this, AidlServeice.class);
+		startService(intent);
+		super.onBackPressed();
 
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
-		}
+		// Intent intent = new Intent(MainActivity.this,ClientMyAidlService.class);
+		// startService(intent);
+		// if (savedInstanceState == null) {
+		// getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
+		// }
 	}
 
 	/**

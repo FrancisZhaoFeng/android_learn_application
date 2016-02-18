@@ -97,6 +97,7 @@ public class HtmlOut {
     private String htmlTop() {
         String strHtml;
         strHtml = "<html>\n";
+        strHtml +="<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
         strHtml += "<body>\n";
         strHtml += "<head>\n";
         strHtml += "<title>MEIZU_内存启动测试</title>\n";

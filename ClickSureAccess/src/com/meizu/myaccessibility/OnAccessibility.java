@@ -9,7 +9,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 public class OnAccessibility extends AccessibilityService {
 
-
 	@Override
 	public void onAccessibilityEvent(AccessibilityEvent event) {
 		// TODO Auto-generated method stub
@@ -24,7 +23,7 @@ public class OnAccessibility extends AccessibilityService {
 
 	private void processOnAyEvent() {
 		AccessibilityNodeInfo nodeInfo = getRootInActiveWindow(); // 得到整个窗口，可以遍历得到所有子节点
-		String[] keywords = { "我知道了", "确定", "允许", "不同意", "android:id/button1" };//
+		String[] keywords = { "确定", "android:id/button1", "允许", "不同意", "我知道了" };// ,
 		if (nodeInfo != null) {
 			for (String keyword : keywords) {
 				List<AccessibilityNodeInfo> setNode;
@@ -47,7 +46,7 @@ public class OnAccessibility extends AccessibilityService {
 			}
 		}
 	}
-	
+
 	@Override
 	public void onInterrupt() {
 		// TODO Auto-generated method stub
