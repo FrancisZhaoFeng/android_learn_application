@@ -2,6 +2,7 @@ package com.meizu.tools;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class MyAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         ViewHolder holder;
-//        Log.d(Tag, "getView:" + position + "==" + convertView);
+        Log.e(TAG, "getView:" + position + "==" + convertView);
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.activity_baseadapter, null);
             holder = new ViewHolder();

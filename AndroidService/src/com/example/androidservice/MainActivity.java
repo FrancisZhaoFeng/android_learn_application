@@ -1,7 +1,5 @@
 package com.example.androidservice;
 
-import com.example.aidlservice.MyAIDLService;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ComponentName;
@@ -16,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.aidlservice.MyAIDLService;
 
 public class MainActivity extends Activity {
 	public static final String Tag = "MainActivity";

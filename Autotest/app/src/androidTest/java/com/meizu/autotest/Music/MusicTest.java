@@ -31,10 +31,11 @@ public class MusicTest extends MusicBase {
         //=====================//
         //=====================//
 //        copySource(true);
-//        ready();
+        mUiDevice.wait
+        ready();
         //==========//
-        playInterface();
-        addToMusicMenu();
+//        playInterface();
+//        addToMusicMenu();
     }
 
     public void playInterface() {

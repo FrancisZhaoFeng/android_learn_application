@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShellUtils {
@@ -15,27 +16,27 @@ public class ShellUtils {
 	public static final String COMMAND_EXIT = "exit\n";
 	public static final String COMMAND_LINE_END = "\n";
 
-	public static String execCommand(String command, boolean isRoot) {
+	public static List<String> execCommand(String command, boolean isRoot) {
 		return execCommand(new String[] { command }, isRoot, true);
 	}
 
-	public static String execCommand(List<String> commands, boolean isRoot) {
+	public static List<String> execCommand(List<String> commands, boolean isRoot) {
 		return execCommand(commands == null ? null : commands.toArray(new String[] {}), isRoot, true);
 	}
 
-	public static String execCommand(String[] commands, boolean isRoot) {
+	public static List<String> execCommand(String[] commands, boolean isRoot) {
 		return execCommand(commands, isRoot, true);
 	}
 
-	public static String execCommand(String command, boolean isRoot, boolean isNeedResultMsg) {
+	public static List<String> execCommand(String command, boolean isRoot, boolean isNeedResultMsg) {
 		return execCommand(new String[] { command }, isRoot, isNeedResultMsg);
 	}
 
-	public static String execCommand(List<String> commands, boolean isRoot, boolean isNeedResultMsg) {
+	public static List<String> execCommand(List<String> commands, boolean isRoot, boolean isNeedResultMsg) {
 		return execCommand(commands == null ? null : commands.toArray(new String[] {}), isRoot, isNeedResultMsg);
 	}
 
-	public static String execCommand(String[] commands, boolean isRoot, boolean isNeedResultMsg) {
+	public static List<String> execCommand(String[] commands, boolean isRoot, boolean isNeedResultMsg) {
 		if (commands == null || commands.length == 0) {
 			return null;
 		}
@@ -44,6 +45,8 @@ public class ShellUtils {
 		BufferedReader successResult = null;
 		BufferedReader errorResult = null;
 		StringBuilder successMsg = null;
+		List<String> listSuccess = new ArrayList<>();
+		List<String> listError = new ArrayList<>();
 		StringBuilder errorMsg = null;
 
 		DataOutputStream os = null;
@@ -68,9 +71,11 @@ public class ShellUtils {
 				String s;
 				while ((s = successResult.readLine()) != null) {
 					successMsg.append(s + "\n");
+					listSuccess.add(s);
 				}
 				while ((s = errorResult.readLine()) != null) {
 					errorMsg.append(s + "\n");
+					listError.add(s);
 				}
 			}
 		} catch (IOException e) {
@@ -98,7 +103,8 @@ public class ShellUtils {
 			Log.d("error", errorMsg.toString());
 		}
 
-		return successMsg.toString();
+//		return successMsg.toString();
+		return listSuccess;
 	}
 
 }

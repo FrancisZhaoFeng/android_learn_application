@@ -1,13 +1,13 @@
 package com.example.androidservice;
 
-import com.example.aidlservice.MyAIDLService;
-import com.example.aidlservice.MyAIDLService.Stub;
-
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Process;
 import android.util.Log;
+
+import com.example.aidlservice.MyAIDLService;
+import com.example.aidlservice.MyAIDLService.Stub;
 
 public class AIDLService extends Service {
 

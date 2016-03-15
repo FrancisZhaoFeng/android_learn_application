@@ -53,17 +53,10 @@ public class UserApi {
 
     public List<UiObject2> getIdOrTextObjectBase(String content, long timeout) {
         List<UiObject2> listUiObject;
-        long startTime = System.currentTimeMillis();
         if (content.contains(":id/")) {
             listUiObject = mUiDevice.wait(Until.findObjects(By.res(content)), timeout);
         } else {
             listUiObject = mUiDevice.wait(Until.findObjects(By.text(content)), timeout);
-        }
-        Log.e(TAG, "获取：" + content + ",时间：" + (System.currentTimeMillis() - startTime));
-        if (listUiObject != null) {
-            Log.e(TAG, content + "--lUiObject not null," + "lUiObject size:" + listUiObject.size());
-        } else {
-            Log.e(TAG, "lUiObject is null");
         }
         if (listUiObject != null && listUiObject.size() != 0) {
             return listUiObject;

@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.litepal.LitePalApplication;
 import org.litepal.crud.DataSupport;
+import org.litepal.tablemanager.Connector;
 
 import com.example.beans.News;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +36,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		LitePalApplication.initialize(this); // 初始化litepal
+		SQLiteDatabase db = Connector.getDatabase(); //操作下数据库，令新建表、升级表 被执行
 		btnSave = (Button) findViewById(R.id.btn_save);
 		btnDelete = (Button) findViewById(R.id.btn_delete);
 		btnUpdate = (Button) findViewById(R.id.btn_update);
@@ -81,7 +84,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			news.updateAll();// 不含conditions 既更新表中的所有数据
 			break;
 		case R.id.btn_check:
-			List<News> listNews = new ArrayList<>(); // isEager表示是否需要激进查询，设置成true就表示激进查询，这样就会把关联表中的数据一起查询出来了。
+			List<News> listNews = new ArrayList<News>(); // isEager表示是否需要激进查询，设置成true就表示激进查询，这样就会把关联表中的数据一起查询出来了。
 			// News tNews = DataSupport.find(News.class, mId);// 查看表中id为5的数据
 			// listNews.add(tNews);
 			// News fristNews = DataSupport.findFirst(News.class);// 查看表中的第一条数据

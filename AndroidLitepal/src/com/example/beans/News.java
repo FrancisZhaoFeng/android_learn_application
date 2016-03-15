@@ -6,7 +6,7 @@ import org.litepal.annotation.Column;
 import org.litepal.crud.DataSupport;
 
 public class News extends DataSupport {
-
+	//unique defaultValue ignore nullable
 	@Column(unique = true, defaultValue = "unknown")
 	private int id;
 	private String title;

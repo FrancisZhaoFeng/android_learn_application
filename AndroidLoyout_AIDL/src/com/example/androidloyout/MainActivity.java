@@ -18,7 +18,6 @@ import android.widget.Button;
 
 import com.example.aidlservice.MyAIDLService;
 import com.example.service.AidlServeice;
-import com.example.service.ClientMyAidlService;
 
 public class MainActivity extends Activity {
 	public static String Tag = "MainActivity";

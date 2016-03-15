@@ -19,6 +19,7 @@ public class Contants {
 	public static String[] dumpElement = new String[]{
 			"Native Heap","Dalvik Heap","TOTAL","Dalvik Other","Stack","Cursor","Ashmem","Other dev",
 			".so mmap",".jar mmap",".apk mmap",".ttf mmap",".dex mmap",".oat mmap",".art mmap","Other mmap",
+			"EGL mtrack","GL mtrack",
 			"Unknown",
 			"Views:","ViewRootImpl:",
 			"AppContexts:","Activities:",

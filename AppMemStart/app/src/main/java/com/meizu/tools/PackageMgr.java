@@ -29,7 +29,7 @@ public class PackageMgr {
             for (PackageInfo pInfo : pInfos) {
                 String pName = pInfo.packageName;
                 Intent intent = packageManager.getLaunchIntentForPackage(pName);
-                if (intent != null && !pName.contains("com.meizu.appmemstart") && !pName.contains("com.meizu.flyme.laun") && !pName.contains("com.android.providers.downloads.ui")) {
+                if (intent != null && !pName.contains("com.meizu.appmemstart") && !pName.contains("com.meizu.flyme.laun")) { //&& !pName.contains("com.android.providers.downloads.ui")
                     try {
                         ApplicationInfo appInfo = packageManager.getApplicationInfo(pName, PackageManager.GET_UNINSTALLED_PACKAGES);
                         String destopName = (String) packageManager.getApplicationLabel(appInfo);

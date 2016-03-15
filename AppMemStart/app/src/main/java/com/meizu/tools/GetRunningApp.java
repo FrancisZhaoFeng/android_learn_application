@@ -8,10 +8,6 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import eu.chainfire.libsuperuser.Shell;
 
 /**
  * Created by zhaoguofeng on 2016/1/9.
@@ -32,39 +28,39 @@ public class GetRunningApp {
         }
     }
 
-    public static List<Process> getRunningProcesses() {
-        List<Process> processes = new ArrayList<>();
-        List<String> stdout = Shell.SH.run("toolbox ps -p -P -x -c");
-        for (String line : stdout) {
-            try {
-                processes.add(new Process(line));
-            } catch (Exception e) {
-                android.util.Log.d(TAG, "Failed parsing line " + line);
-            }
-        }
-        return processes;
-    }
-
-    public static List<Process> getRunningApps() {
-        List<Process> processes = new ArrayList<>();
-        List<String> stdout = Shell.SH.run("toolbox ps -p -P -x -c");
-        int myPid = android.os.Process.myPid();
-        for (String line : stdout) {
-            try {
-                Process process = new Process(line);
-                if (process.user.matches(APP_ID_PATTERN)) {
-                    if (process.ppid == myPid || process.name.equals("toolbox")) {
-                        // skip the processes we created to get the running apps.
-                        continue;
-                    }
-                    processes.add(process);
-                }
-            } catch (Exception e) {
-                android.util.Log.d(TAG, "Failed parsing line " + line);
-            }
-        }
-        return processes;
-    }
+//    public static List<Process> getRunningProcesses() {
+//        List<Process> processes = new ArrayList<>();
+//        List<String> stdout = Shell.SH.run("toolbox ps -p -P -x -c");
+//        for (String line : stdout) {
+//            try {
+//                processes.add(new Process(line));
+//            } catch (Exception e) {
+//                android.util.Log.d(TAG, "Failed parsing line " + line);
+//            }
+//        }
+//        return processes;
+//    }
+//
+//    public static List<Process> getRunningApps() {
+//        List<Process> processes = new ArrayList<>();
+//        List<String> stdout = Shell.SH.run("toolbox ps -p -P -x -c");
+//        int myPid = android.os.Process.myPid();
+//        for (String line : stdout) {
+//            try {
+//                Process process = new Process(line);
+//                if (process.user.matches(APP_ID_PATTERN)) {
+//                    if (process.ppid == myPid || process.name.equals("toolbox")) {
+//                        // skip the processes we created to get the running apps.
+//                        continue;
+//                    }
+//                    processes.add(process);
+//                }
+//            } catch (Exception e) {
+//                android.util.Log.d(TAG, "Failed parsing line " + line);
+//            }
+//        }
+//        return processes;
+//    }
 
     public static class Process implements Parcelable {
 

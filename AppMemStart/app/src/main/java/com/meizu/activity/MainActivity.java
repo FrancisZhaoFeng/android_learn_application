@@ -3,7 +3,6 @@ package com.meizu.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(MainActivity.this, AppStartService.class);
                 intent.putParcelableArrayListExtra("mainPckInfos", (ArrayList<? extends Parcelable>) mainPckInfos);
                 startService(intent);
-//                stopService(intent);
             }
         });
         setMainListView();
@@ -127,9 +125,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         packgeMan = new PackageMgr(MainActivity.this);
         packgeMan.getPackageName(allPckInfos);
         //自动开启accibility服务
-        Settings.Secure.putString(getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-                "com.meizu.appmemstart/com.meizu.tools.OnAccessibility");
-        Settings.Secure.putInt(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, 1);
+//        Settings.Secure.putString(getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
+//                "com.meizu.appmemstart/com.meizu.tools.OnAccessibility");
+//        Settings.Secure.putInt(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, 1);
     }
 
     private void setMainListView() {
