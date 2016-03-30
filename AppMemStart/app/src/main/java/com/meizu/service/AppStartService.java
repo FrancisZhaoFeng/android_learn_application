@@ -41,7 +41,7 @@ public class AppStartService extends Service {
         // TODO Auto-generated method stub
         super.onCreate();
 
-        registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_ON));
+        registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_ON));//不能进行静态注册
         registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_OFF));
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
@@ -59,7 +59,7 @@ public class AppStartService extends Service {
         if (pckInfos == null) {
             Log.e(TAG, "MainActivity传递的pckInfos是null的");
         } else {
-            Log.i(TAG, "onStartCommand: "+Contants.USERHABITINFO.toString());
+            Log.i(TAG, "onStartCommand: " + Contants.USERHABITINFO.toString());
             new Thread(sendable).start();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -141,10 +141,9 @@ public class AppStartService extends Service {
             // TODO Auto-generated method stub
 
             Log.i("[BroadcastReceiver]", "MyReceiver");
-            if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+            if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
                 Log.i("[BroadcastReceiver]", "Screen ON");
-            }
-            else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+            } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                 Log.i("[BroadcastReceiver]", "Screen OFF");
                 wl.acquire();
                 wl.release();

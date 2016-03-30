@@ -1,7 +1,9 @@
 package com.meizu.autotest.Music;
 
 import android.app.Instrumentation;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.Until;
 
 import org.junit.After;
 import org.junit.Test;
@@ -31,8 +33,8 @@ public class MusicTest extends MusicBase {
         //=====================//
         //=====================//
 //        copySource(true);
-        mUiDevice.wait
-        ready();
+        mUiDevice.wait(Until.findObject(By.text("蓝牙")), 60 * 1000).click();
+//        ready();
         //==========//
 //        playInterface();
 //        addToMusicMenu();

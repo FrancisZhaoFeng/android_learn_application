@@ -4,11 +4,14 @@ import android.app.Instrumentation;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject2;
+import android.support.test.uiautomator.Until;
 import android.util.Log;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.List;
@@ -33,6 +36,11 @@ public class MusicBase extends UserApi {
         mInstrumentation = InstrumentationRegistry.getInstrumentation();
         mUiDevice = UiDevice.getInstance(mInstrumentation);
         super.setUp(mInstrumentation, mUiDevice);
+    }
+
+    @Test
+    public  void test(){
+        mUiDevice.wait(Until.findObject(By.text("蓝牙sdf")), 60 * 1000).click();
     }
 
     protected boolean waitForPlay(int times) {
