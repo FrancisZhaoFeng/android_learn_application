@@ -27,7 +27,7 @@ public class ApkHandleUtil {
     final static Object mLock = new Object();
 
     public static void installApk(ApkTestInfoBean apkTestInfoBean, Context context) {
-        Log.e(Constant.TAG, "installApk:" + apkTestInfoBean.toString());
+        Log.i(Constant.TAG, "installApk:" + apkTestInfoBean.toString());
         if (apkTestInfoBean.getPackageName().contains("com.meizu.media.")) {//系统应用安装失败，且导致程序假死
             apkTestInfoBean.setStatus(Constant.status[0]);
             Constant.installFinish = true;
@@ -58,7 +58,7 @@ public class ApkHandleUtil {
     }
 
     public static void testApk(ApkTestInfoBean apkTestInfoBean, Context context) {
-        Log.e(Constant.TAG, "testApk:" + apkTestInfoBean.getFileName());
+        Log.i(Constant.TAG, "testApk:" + apkTestInfoBean.getFileName());
         PackageManager pm = context.getPackageManager();
         Intent apkIntent = pm.getLaunchIntentForPackage(apkTestInfoBean.getPackageName());
         boolean bOpen = false;
@@ -66,16 +66,16 @@ public class ApkHandleUtil {
             context.startActivity(apkIntent);
             sleep(1000);
             if (bOpen = hasOpen(apkTestInfoBean.getPackageName(), context)) {
-                Log.e(Constant.TAG, "monkeyApk:" + apkTestInfoBean.getFileName());
+                Log.i(Constant.TAG, "monkeyApk:" + apkTestInfoBean.getFileName());
                 if (Constant.userHabitBean.getIsNeedMonkey()) {
-                    Intent monkey = new Intent(context, MonkeyTestService.class);
-                    monkey.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    monkey.putExtra("pkgName", apkTestInfoBean.getPackageName());
-                    context.startService(monkey);
+                    Intent monkeyIntent = new Intent(context, MonkeyTestService.class);
+                    monkeyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    monkeyIntent.putExtra("pkgName", apkTestInfoBean.getPackageName());
+                    context.startService(monkeyIntent);
                     sleep(Constant.userHabitBean.getMonkeyRunTime() * 1000);
                     killedMonkeyTest();
-                    context.stopService(monkey);
-                    sleep(5 * 1000);  //
+                    context.stopService(monkeyIntent);
+                    sleep(3 * 1000);  //
                 }
                 apkTestInfoBean.setStatus(Constant.status[3]);
             }
@@ -87,7 +87,7 @@ public class ApkHandleUtil {
     }
 
     public static void uninstallApk(ApkTestInfoBean apkTestInfoBean, Context context) {
-        Log.e(Constant.TAG, "uninstallApk:" + apkTestInfoBean.getFileName());
+        Log.i(Constant.TAG, "uninstallApk:" + apkTestInfoBean.getFileName());
         PackageManager pm = context.getPackageManager();
         int installFlags = 0;
         try {
@@ -113,9 +113,9 @@ public class ApkHandleUtil {
         @Override
         public void packageInstalled(String packageName, int returnCode) {
             if (returnCode == 1) {
-                Log.e(Constant.TAG, "MyPakcageInstallObserver：1，" + packageName);
+                Log.i(Constant.TAG, "MyPakcageInstallObserver：1，" + packageName);
             } else {
-                Log.e(Constant.TAG, "MyPakcageInstallObserver：2，" + packageName);
+                Log.i(Constant.TAG, "MyPakcageInstallObserver：2，" + packageName);
                 Constant.curTestApk.setStatus(Constant.status[0]);
                 FileUtil.grabIOLog(Constant.failLog[0], Constant.curTestApk);
             }
@@ -128,9 +128,9 @@ public class ApkHandleUtil {
         @Override
         public void packageDeleted(String packageName, int returnCode) {
             if (returnCode == 1) {
-                Log.e(Constant.TAG, "MyPackageDeleteObserver：1，" + packageName);
+                Log.i(Constant.TAG, "MyPackageDeleteObserver：1，" + packageName);
             } else {
-                Log.e(Constant.TAG, "MyPackageDeleteObserver：2，" + packageName);
+                Log.i(Constant.TAG, "MyPackageDeleteObserver：2，" + packageName);
             }
             DBUtil.saveStatus(Constant.curTestApk);//数据库中保存安装状态
             Constant.uninstallFinish = true;
@@ -162,7 +162,7 @@ public class ApkHandleUtil {
             }
             if (hasOpen) {
                 if (bFirst < 5) {//判断activity打开是否15秒
-                    Log.e(Constant.TAG, "包名：" + pkgName + ",界面：" + activityStr);
+                    Log.i(Constant.TAG, "包名：" + pkgName + ",界面：" + activityStr);
                     bFirst++;
                     sleep(1000);
                 } else {
@@ -197,7 +197,7 @@ public class ApkHandleUtil {
             if (a[i].contains("com.android.commands.monkey")) {
                 int pid = Integer.valueOf(a[i].split(" ")[4]);
                 ShellUtils.execCommand(" kill " + pid, false, true);
-                Log.e(Constant.TAG, "kill monkey:" + pid);
+                Log.i(Constant.TAG, "kill monkey:" + pid);
                 sleep(500);
                 break;
             }
@@ -223,7 +223,7 @@ public class ApkHandleUtil {
             index++;
             if (!isinstall) {
                 ShellUtils.execCommand("pm install " + file.getPath(), false);
-                Log.e(Constant.TAG, "pm install " + file.getPath());
+                Log.i(Constant.TAG, "pm install " + file.getPath());
             }
         }
         return true;

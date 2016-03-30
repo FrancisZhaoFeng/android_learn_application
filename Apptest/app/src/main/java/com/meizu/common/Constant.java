@@ -14,7 +14,7 @@ import java.util.List;
  * Created by zhaoguofeng on 2016/3/17.
  */
 public class Constant {
-    public static String TAG = "apptest";
+    public static String TAG = "apptestlogcat";
     public static String autotestPath = Environment.getExternalStorageDirectory().toString() + "/AutoTest";
     public static String reportName = "/Report.html";
     public static String model = android.os.Build.DEVICE;

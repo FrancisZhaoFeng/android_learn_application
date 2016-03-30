@@ -27,7 +27,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                 state = networkInfo.getState();
                 if (state == NetworkInfo.State.CONNECTED) {
                     wifiStatus = true;
-                    Log.e(Constant.TAG, "已连接网络");
+                    Log.i(Constant.TAG, "已连接网络");
                 } else if (state == NetworkInfo.State.DISCONNECTING || state == NetworkInfo.State.DISCONNECTED) {//网络断开
                     wifiStatus = false;
                 }
@@ -39,7 +39,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         }
         if (!wifiStatus) {
             threadCon.start();
-            Log.e(Constant.TAG, "wifi正在连接");
+            Log.i(Constant.TAG, "wifi正在连接");
         }
     }
 

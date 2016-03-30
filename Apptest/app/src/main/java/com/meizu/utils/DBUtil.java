@@ -20,7 +20,7 @@ public class DBUtil {
     public static List<ApkTestInfoBean> checkDBByStatus(String status) {
         List<ApkTestInfoBean> apkTestInfoBeanList = DataSupport.where("status like ?", status).find(ApkTestInfoBean.class);
         for (ApkTestInfoBean apkTestInfoBean : apkTestInfoBeanList) {
-            Log.e(Constant.TAG, "checkDBByStatus:" + apkTestInfoBean.toString());
+            Log.i(Constant.TAG, "checkDBByStatus:" + apkTestInfoBean.toString());
         }
         return apkTestInfoBeanList;
     }

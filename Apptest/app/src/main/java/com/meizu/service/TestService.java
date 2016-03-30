@@ -57,7 +57,7 @@ public class TestService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e(Constant.TAG, "this is service onCreat");
+        Log.i(Constant.TAG, "this is service onCreat");
         //动态注册屏幕状态改变监听器，注意：不能进行静态注册
         registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_ON));
         registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_OFF));
@@ -71,7 +71,7 @@ public class TestService extends Service {
     //adb 发送命令：am startservice -n com.meizu.apptest/com.meizu.service.TestService --es path apptest --ei count 5 --ez isMonkey true --ei mTime 30
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(Constant.TAG, "this is service onStartCommand");
+        Log.i(Constant.TAG, "this is service onStartCommand");
         setData(intent);//保存intent传过来的值
         init();//保存context；安装应用：meizuuser，静音工具，google框架；aidl绑定meizuuser
         apkThread.start();
@@ -81,7 +81,7 @@ public class TestService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.e(Constant.TAG, "this is service onDestroy");
+        Log.i(Constant.TAG, "this is service onDestroy");
         destroy();
         super.onDestroy();
     }
@@ -142,11 +142,11 @@ public class TestService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
-            Log.e(Constant.TAG, "MyReceiver");
+            Log.i(Constant.TAG, "MyReceiver");
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                Log.e(Constant.TAG, "Screen ON");
+                Log.i(Constant.TAG, "Screen ON");
             } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                Log.e(Constant.TAG, "Screen OFF");
+                Log.i(Constant.TAG, "Screen OFF");
                 wl.acquire();
                 wl.release();
                 ShellUtils.execCommand("input swipe 500 1300 500 100", false);
@@ -160,7 +160,7 @@ public class TestService extends Service {
             if (meizuUser == null) {
                 try {
                     apkThread.sleep(100);
-                    Log.e(Constant.TAG, "meizuUser == null");
+                    Log.i(Constant.TAG, "meizuUser == null");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -187,7 +187,7 @@ public class TestService extends Service {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Log.e(Constant.TAG, "while " + info + " apk ===>installFinish:" + !Constant.installFinish + ",uninstallFinish:" + !Constant.uninstallFinish);//防止在循环中死掉，不知道原因
+            Log.i(Constant.TAG, "while " + info + " apk ===>installFinish:" + !Constant.installFinish + ",uninstallFinish:" + !Constant.uninstallFinish);//防止在循环中死掉，不知道原因
         }
     }
 
@@ -198,7 +198,7 @@ public class TestService extends Service {
             while (i < 100) {
                 try {
                     testThread.sleep(2 * 1000);
-                    Log.e(Constant.TAG, "testThread：" + (i++));
+                    Log.i(Constant.TAG, "testThread：" + (i++));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -214,7 +214,7 @@ public class TestService extends Service {
             FileUtil.getFileListAndInsert(Constant.userHabitBean.getFilePath(), mContext);//遍历 apk文件路径，并且读取apk信息和保存到数据库，花时间比较长
             List<ApkTestInfoBean> apkTestInfoBeanList = DBUtil.checkDBByStatus(Constant.status[4]);//将数据库中noTest的status过滤出来进行测试
             Collections.sort(apkTestInfoBeanList);//排序
-            Log.e(Constant.TAG, "需要测试的apk个数：" + apkTestInfoBeanList.size() + "，" + Constant.userHabitBean.toString());
+            Log.i(Constant.TAG, "需要测试的apk个数：" + apkTestInfoBeanList.size() + "，" + Constant.userHabitBean.toString());
             //核心代码段
             int index = 0;
             while (apkTestInfoBeanList.size() > index * Constant.userHabitBean.getCount()) {
@@ -241,7 +241,7 @@ public class TestService extends Service {
                 Constant.curTestApks.clear();
             }
             waitIOFinish("over");
-            Log.e(Constant.TAG, "测试结束......");
+            Log.i(Constant.TAG, "测试结束......");
             //打开报告
             HtmlOut htmlOut = new HtmlOut();
             htmlOut.creathtml();

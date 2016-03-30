@@ -134,7 +134,7 @@ public class ConnectWifiUtil {
 
     public void connectOnlyOneWifi(String ssid, String email, String emailPwd, ConnectWifiUtil.WifiCipherType type) {
         synchronized (ConnectWifiUtil.class) {
-            Log.e(Constant.TAG, "connectOnlyOneWifi开始");
+            Log.i(Constant.TAG, "connectOnlyOneWifi开始");
             if (this.checkWifi()) {
                 return;
             }
@@ -145,7 +145,7 @@ public class ConnectWifiUtil {
             while (System.currentTimeMillis() - startTimeMillis < 15 * 1000 && !this.checkWifi()) {
                 SystemClock.sleep(500);
             }
-            Log.e(Constant.TAG, "connectOnlyOneWifi结束");
+            Log.i(Constant.TAG, "connectOnlyOneWifi结束");
         }
     }
 

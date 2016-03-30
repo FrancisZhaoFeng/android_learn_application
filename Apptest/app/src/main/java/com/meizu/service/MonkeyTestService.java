@@ -44,7 +44,7 @@ public class MonkeyTestService extends Service {
 	private void startMonkeyTest(String pck) {
 		String cmd = "monkey -p " + pck + " --pct-touch 50  --pct-motion 15  --pct-anyevent 5  --pct-majornav 12  --pct-trackball 1  --pct-nav 0  --pct-syskeys 15  --pct-appswitch 2  --throttle 500  -s  0  -v  500";
 		Log.i(TAG, "执行monkey命令：" + cmd);
-		ShellUtils.execCommand(cmd, false, true);
+		ShellUtils.execCommand(cmd, false);
 
 	}
 

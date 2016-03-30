@@ -71,7 +71,7 @@ public class FileUtil {
         File file = new File(apkPath);
         String fileNames[] = file.list();
         if (!file.exists() || fileNames == null) {//判断文件夹是否存在 和 文件夹中是否有apk
-            Log.e(Constant.TAG, "!file.exists() || fileNames == null");
+            Log.i(Constant.TAG, "!file.exists() || fileNames == null");
             return;
         }
         List<ApkTestInfoBean> apkTestInfoBeanList = new ArrayList<>();
