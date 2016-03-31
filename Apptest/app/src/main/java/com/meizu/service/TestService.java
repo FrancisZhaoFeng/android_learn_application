@@ -199,6 +199,7 @@ public class TestService extends Service {
                 try {
                     testThread.sleep(2 * 1000);
                     Log.i(Constant.TAG, "testThread：" + (i++));
+                    ApkHandleUtil.killedMonkeyTest();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -220,6 +221,7 @@ public class TestService extends Service {
             while (apkTestInfoBeanList.size() > index * Constant.userHabitBean.getCount()) {
                 //根据count值来执行一批的测试数量
                 ShellUtils.execCommand("input keyevent 3", false);//回到桌面
+                ShellUtils.execCommand("input swipe 1000 500 10 500", false);//回到桌面
                 List<ApkTestInfoBean> apkCounts = apkTestInfoBeanList.subList(index * Constant.userHabitBean.getCount(), apkTestInfoBeanList.size() > (index + 1) * Constant.userHabitBean.getCount() ? (index + 1) * Constant.userHabitBean.getCount() : apkTestInfoBeanList.size());
                 for (ApkTestInfoBean apkCount : apkCounts) {
                     waitIOFinish("install");

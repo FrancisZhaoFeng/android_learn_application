@@ -7,7 +7,6 @@ import android.content.pm.IPackageDeleteObserver;
 import android.content.pm.IPackageInstallObserver;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 
@@ -19,6 +18,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhaoguofeng on 2016/3/17.
@@ -75,7 +75,6 @@ public class ApkHandleUtil {
                     sleep(Constant.userHabitBean.getMonkeyRunTime() * 1000);
                     killedMonkeyTest();
                     context.stopService(monkeyIntent);
-                    sleep(3 * 1000);  //
                 }
                 apkTestInfoBean.setStatus(Constant.status[3]);
             }
@@ -192,13 +191,15 @@ public class ApkHandleUtil {
     }
 
     public static void killedMonkeyTest() {
-        String a[] = ShellUtils.execCommand("ps", false, true).split("\n");
-        for (int i = 0; i < a.length; i++) {
-            if (a[i].contains("com.android.commands.monkey")) {
-                int pid = Integer.valueOf(a[i].split(" ")[4]);
-                ShellUtils.execCommand(" kill " + pid, false, true);
-                Log.i(Constant.TAG, "kill monkey:" + pid);
+        for (int i = 0; i < 10; i++) {
+            String strMonkey = ShellUtils.execCommand("ps | grep com.android.commands.monkey", false, true);
+            if (strMonkey.equals("")) {
                 sleep(500);
+            } else {
+                String pid = Pattern.compile("\\D+").split(strMonkey)[1];
+                ShellUtils.execCommand("kill " + pid, false, true);
+                Log.i(Constant.TAG, "monkey = kill " + pid);
+                sleep(1000);
                 break;
             }
         }

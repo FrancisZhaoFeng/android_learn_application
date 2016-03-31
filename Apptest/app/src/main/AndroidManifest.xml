@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:sharedUserId="android.uid.system"
     package="com.meizu.apptest">
 
     <!-- android:sharedUserId="android.uid.system"-->
@@ -12,10 +13,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <!--<uses-permission android:name="android.permission.DEVICE_POWER"/>-->
-    <!--<uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />-->
-    <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES" />-->
-    <!--<uses-permission android:name="android.permission.DELETE_PACKAGES" />-->
+    <uses-permission android:name="android.permission.DEVICE_POWER"/>
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
 
     <application
         android:allowBackup="true"
