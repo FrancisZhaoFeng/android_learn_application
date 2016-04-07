@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,8 +17,7 @@ import com.meizu.beans.UserHabitBean;
 import com.meizu.common.Constant;
 import com.meizu.report.HtmlOut;
 import com.meizu.service.TestService;
-import com.meizu.utils.ApkHandleUtil;
-import com.meizu.utils.FileUtil;
+import com.meizu.utils.ShellUtils;
 
 import org.litepal.LitePalApplication;
 import org.litepal.crud.DataSupport;
@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initail() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabRun = (FloatingActionButton) findViewById(R.id.fabrun);
+        fabRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getDate();
@@ -91,6 +91,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("mTime", userHabitBean.getMonkeyRunTime());
                 startService(intent);
                 onBackPressed();
+            }
+        });
+        FloatingActionButton fabStop = (FloatingActionButton) findViewById(R.id.fabstop);
+        fabStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e(Constant.TAG,"暂停：am force-stop com.meizu.apptest");
+                ShellUtils.execCommand("am force-stop com.meizu.apptest", false);
             }
         });
         //=========================//自己定义的控件

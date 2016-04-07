@@ -9,7 +9,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 3
-        versionName "2.0.1"
+        versionName "2.5.2"
     }
     buildTypes {
         release {
@@ -31,7 +31,7 @@ android {
 }
 
 def releaseTime() {
-    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
 }
 
 dependencies {

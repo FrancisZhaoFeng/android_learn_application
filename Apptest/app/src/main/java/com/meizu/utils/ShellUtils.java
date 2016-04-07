@@ -55,8 +55,7 @@ public class ShellUtils {
 
         DataOutputStream os = null;
         try {
-            process = Runtime.getRuntime().exec(
-                    isRoot ? COMMAND_SU : COMMAND_SH);
+            process = Runtime.getRuntime().exec(isRoot ? COMMAND_SU : COMMAND_SH);
             os = new DataOutputStream(process.getOutputStream());
             for (String command : commands) {
                 if (command == null) {
@@ -71,10 +70,8 @@ public class ShellUtils {
             if (isNeedResultMsg) {
                 successMsg = new StringBuilder();
                 errorMsg = new StringBuilder();
-                successResult = new BufferedReader(new InputStreamReader(
-                        process.getInputStream()));
-                errorResult = new BufferedReader(new InputStreamReader(
-                        process.getErrorStream()));
+                successResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 String s;
                 while ((s = successResult.readLine()) != null) {
                     successMsg.append(s + "\n");
@@ -101,8 +98,13 @@ public class ShellUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            if (process != null) {
+            try {
+                if (process != null) {
+                    // use exitValue() to determine if process is still running.
+                    process.exitValue();
+                }
+            } catch (IllegalThreadStateException e) {
+                // process is still running, kill it.
                 process.destroy();
             }
             Log.d("error", errorMsg.toString());

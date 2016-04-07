@@ -4,21 +4,18 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.os.RemoteException;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.meizu.apptest.R;
 import com.meizu.beans.ApkTestInfoBean;
 import com.meizu.beans.UserHabitBean;
 import com.meizu.common.Constant;
-import com.meizu.meizuuser.MeizuApi;
 import com.meizu.report.HtmlOut;
 import com.meizu.utils.ApkHandleUtil;
 import com.meizu.utils.DBUtil;
@@ -41,23 +38,15 @@ public class TestService extends Service {
     private PowerManager pm;
     private PowerManager.WakeLock wl;
 
-    private static MeizuApi meizuUser;
-    private ServiceConnection conn = new ServiceConnection() {
-        @Override
-        synchronized public void onServiceConnected(ComponentName name, IBinder service) {
-            meizuUser = MeizuApi.Stub.asInterface(service);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            meizuUser = null;
-        }
-    };
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.i(Constant.TAG, "this is service onCreat");
+        //自动开启accibility服务
+        Settings.Secure.putString(getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
+                "com.meizu.apptest/com.meizu.service.OnAccessibilityService");
+        Settings.Secure.putInt(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, 1);
         //动态注册屏幕状态改变监听器，注意：不能进行静态注册
         registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_ON));
         registerReceiver(screenOffOn, new IntentFilter(Intent.ACTION_SCREEN_OFF));
@@ -73,7 +62,7 @@ public class TestService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(Constant.TAG, "this is service onStartCommand");
         setData(intent);//保存intent传过来的值
-        init();//保存context；安装应用：meizuuser，静音工具，google框架；aidl绑定meizuuser
+        initialize(); //保存context；安装应用：meizuuser，静音工具，google框架；初始化变量；创建文件夹；启动google，静音工具；启动logcat服务
         apkThread.start();
 //        testThread.start();
         return super.onStartCommand(intent, flags, startId);
@@ -96,6 +85,7 @@ public class TestService extends Service {
 
     private void setData(Intent intent) {
         //====================================//保存用户记录
+        if (intent == null) return;
         String path = intent.getStringExtra("path");
         path = path == null ? "apptest" : path;
         int count = intent.getIntExtra("count", 5);
@@ -105,14 +95,10 @@ public class TestService extends Service {
         userHabitBean.save();
     }
 
-    private void init() {
-        mContext = this;
-        ApkHandleUtil.installApk(mContext);
-        Intent aidlIntent = new Intent("com.meizu.meizuuser.MeizuApi").setPackage("com.meizu.meizuuser");
-        bindService(aidlIntent, conn, BIND_AUTO_CREATE);
-    }
 
     private void initialize() {
+        mContext = this;
+        ApkHandleUtil.installApk(mContext);
         //初始化变量：一批list，安装和卸载成功变量
         Constant.curTestApks = new ArrayList<>();
         Constant.installFinish = true;
@@ -125,17 +111,20 @@ public class TestService extends Service {
                 FileUtil.mkDirs(logPath);
             }
         }
-        //等待meizuUser连接成功
-        waitForMeizuAPI();
         //启动google安装器（并点击安装）；启动静音工具；
-        ShellUtils.execCommand("am start -n com.howie.gserverinstall/com.howie.gserverinstall.ui.MainActivity", false);
         ShellUtils.execCommand("am startservice com.jacky.permanent/com.jacky.permanent.MyService", false);
-        try {
-            meizuUser.touchIdByIndex("com.howie.gserverinstall:id/btnInstall", 1, true, true, 5 * 1000);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if(!ApkHandleUtil.isInstalledApk(mContext,"com.google.android.gms")){
+            ShellUtils.execCommand("am start -n com.howie.gserverinstall/com.howie.gserverinstall.ui.MainActivity", false);
+            ApkHandleUtil.sleep(1000);
+            ShellUtils.execCommand("input  tap 540 1560", false);
+            ShellUtils.execCommand("input  tap 540 1760", false);
+            ShellUtils.execCommand("input  tap 540 1960", false);
+            ShellUtils.execCommand("input keyevent 3", false);
         }
-        ShellUtils.execCommand("input keyevent 3", false);
+        //启动抓log服务
+        Intent logcat = new Intent(mContext, LogcatService.class);
+        logcat.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(logcat);
     }
 
     BroadcastReceiver screenOffOn = new BroadcastReceiver() {
@@ -155,24 +144,8 @@ public class TestService extends Service {
         }
     };
 
-    private synchronized void waitForMeizuAPI() {
-        while (true) {
-            if (meizuUser == null) {
-                try {
-                    apkThread.sleep(100);
-                    Log.i(Constant.TAG, "meizuUser == null");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                break;
-            }
-        }
-    }
-
     private void destroy() {
         //aidl解绑，关闭静音服务和本服务
-        unbindService(conn);
         ShellUtils.execCommand("am force-stop com.jacky.permanent", false);
         ShellUtils.execCommand("am force-stop com.meizu.apptest", false);
     }
@@ -181,13 +154,14 @@ public class TestService extends Service {
     等待安装和卸载应用完成，保证线性运行
      */
     private void waitIOFinish(String info) {
-        while (!Constant.installFinish || !Constant.uninstallFinish) { //安装完一个才能安装下一个
+        Long startTime = System.currentTimeMillis();
+        while ((!Constant.installFinish || !Constant.uninstallFinish) && System.currentTimeMillis() - startTime < 18 * 60 * 1000) { //安装完一个才能安装下一个，18分钟后不进行等待
             try {
                 Thread.sleep(2 * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Log.i(Constant.TAG, "while " + info + " apk ===>installFinish:" + !Constant.installFinish + ",uninstallFinish:" + !Constant.uninstallFinish);//防止在循环中死掉，不知道原因
+            Log.i(Constant.TAG, "while " + info + " apk ===>installFinish:" + !Constant.installFinish + ",uninstallFinish:" + !Constant.uninstallFinish + "==>" + Constant.curTestApk.getFileName());//防止在循环中死掉，不知道原因
         }
     }
 
@@ -195,22 +169,21 @@ public class TestService extends Service {
         @Override
         public void run() {
             int i = 0;
-            while (i < 100) {
+            while (i < 10) {
                 try {
-                    testThread.sleep(2 * 1000);
+                    testThread.sleep(1000);
                     Log.i(Constant.TAG, "testThread：" + (i++));
-                    ApkHandleUtil.killedMonkeyTest();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            stopSelf();
         }
     });
 
     Thread apkThread = new Thread(new Runnable() {
         @Override
         public void run() {
-            initialize();
             Constant.userHabitBean = DataSupport.findLast(UserHabitBean.class);//获取用户最新习惯数据
             FileUtil.getFileListAndInsert(Constant.userHabitBean.getFilePath(), mContext);//遍历 apk文件路径，并且读取apk信息和保存到数据库，花时间比较长
             List<ApkTestInfoBean> apkTestInfoBeanList = DBUtil.checkDBByStatus(Constant.status[4]);//将数据库中noTest的status过滤出来进行测试

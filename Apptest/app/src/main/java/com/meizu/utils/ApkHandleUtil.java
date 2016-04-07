@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.meizu.beans.ApkTestInfoBean;
+import com.meizu.beans.UserHabitBean;
 import com.meizu.common.Constant;
 import com.meizu.service.MonkeyTestService;
 
@@ -68,6 +69,7 @@ public class ApkHandleUtil {
             if (bOpen = hasOpen(apkTestInfoBean.getPackageName(), context)) {
                 Log.i(Constant.TAG, "monkeyApk:" + apkTestInfoBean.getFileName());
                 if (Constant.userHabitBean.getIsNeedMonkey()) {
+                    drapToMain();//左滑7次，上画7次
                     Intent monkeyIntent = new Intent(context, MonkeyTestService.class);
                     monkeyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     monkeyIntent.putExtra("pkgName", apkTestInfoBean.getPackageName());
@@ -77,6 +79,7 @@ public class ApkHandleUtil {
                     context.stopService(monkeyIntent);
                 }
                 apkTestInfoBean.setStatus(Constant.status[3]);
+                FileUtil.deleteFile(Constant.userHabitBean.getFilePath() + apkTestInfoBean.getFileName());
             }
         }
         if (!bOpen) {
@@ -207,7 +210,7 @@ public class ApkHandleUtil {
 
     public static boolean installApk(Context context) {
         File files[] = FileUtil.getAssetFile(context);
-        String pName[] = {"com.meizu.meizuuser", "com.jacky.permanent", "com.howie.gserverinstall"};
+        String pName[] = {"com.jacky.permanent", "com.howie.gserverinstall"};
         PackageManager pManager = context.getPackageManager();
         List<PackageInfo> appList = pManager.getInstalledPackages(0);
         int index = 0;
@@ -228,5 +231,32 @@ public class ApkHandleUtil {
             }
         }
         return true;
+    }
+
+    private static void drapToMain() {
+        for (int i = 0; i < 7; i++) {
+            ShellUtils.execCommand("input swipe 1000 1000 10 1000 300", false);
+            sleep(100);
+        }
+        for (int i = 0; i < 7; i++) {
+            ShellUtils.execCommand("input swipe 500 1200 500 100 300", false);
+            sleep(100);
+        }
+    }
+
+    public static boolean isInstalledApk(Context context, String packageName) {
+        PackageManager pManager = context.getPackageManager();
+        List<PackageInfo> appList = pManager.getInstalledPackages(0);
+        boolean isInstall = false;
+        for (int i = 0; i < appList.size(); i++) {
+            PackageInfo pak = appList.get(i);
+            String mPak = pak.packageName;
+            if (mPak.contains(packageName)) {
+                isInstall = true;
+                break;
+            }
+        }
+        Log.i(Constant.TAG, "已安装（谷歌框架、服务、商店）："+isInstall);
+        return isInstall;
     }
 }

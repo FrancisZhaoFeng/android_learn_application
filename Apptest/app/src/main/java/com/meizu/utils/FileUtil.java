@@ -27,12 +27,12 @@ import java.util.List;
 public class FileUtil {
 
     public static File[] getAssetFile(Context context) {
-        File files[] = {null, null, null};
+        File files[] = {null, null};
         AssetManager asset = context.getAssets();
         String sysVersion = android.os.Build.DISPLAY;
         mkDirs(Constant.autotestPath);
 
-        String fileName[] = {"meizuuser5.0_prd.apk", "PermanentSerivice_prd.apk", "google.apk"};
+        String fileName[] = {"PermanentSerivice_prd.apk", "google.apk"};
         for (int i = 0; i < fileName.length; i++) {
             if (sysVersion.contains("eng") && fileName[i].contains("_prd")) {
                 fileName[i] = fileName[i].replace("_prd", "_eng");
@@ -58,7 +58,13 @@ public class FileUtil {
         return files;
     }
 
-
+    public static boolean deleteFile(String file) {
+        File apk = new File(file);
+        Log.i(Constant.TAG, "删除apk：" + file);
+        if (apk.exists())
+            return apk.delete();
+        return true;
+    }
 
     public static void mkDirs(String sdPath) {
         File file = new File(sdPath);

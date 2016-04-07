@@ -1,7 +1,5 @@
 package com.meizu.utils;
 
-import android.util.Log;
-
 import com.meizu.beans.ApkTestInfoBean;
 import com.meizu.beans.PhoneTestInfoBean;
 import com.meizu.common.Constant;
@@ -19,9 +17,9 @@ public class DBUtil {
 
     public static List<ApkTestInfoBean> checkDBByStatus(String status) {
         List<ApkTestInfoBean> apkTestInfoBeanList = DataSupport.where("status like ?", status).find(ApkTestInfoBean.class);
-        for (ApkTestInfoBean apkTestInfoBean : apkTestInfoBeanList) {
-            Log.i(Constant.TAG, "checkDBByStatus:" + apkTestInfoBean.toString());
-        }
+//        for (ApkTestInfoBean apkTestInfoBean : apkTestInfoBeanList) {
+//            Log.i(Constant.TAG, "checkDBByStatus:" + apkTestInfoBean.toString());
+//        }
         return apkTestInfoBeanList;
     }
 
