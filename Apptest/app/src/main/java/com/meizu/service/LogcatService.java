@@ -1,6 +1,7 @@
 package com.meizu.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
@@ -28,14 +29,6 @@ public class LogcatService extends Service {
     Boolean serviceRun = true;
     String pathStr = Environment.getExternalStorageDirectory().getPath();
 
-    String[] runcommand = {"cat /proc/version", "cat /proc/cpuinfo", "cat /proc/meminfo", "cat /proc/last_kmsg", "cat /proc/reset_reason",
-            "cat /data/anr/traces.txt", "cat /data/ril.log", "cat /data/ril_miss.log", "cat /data/ril_sn.log", "cat /cache/recovery/last_install",
-            "cat /cache/recovery/last_log", "getprop", "ps", "logcat -v threadtime -d", "logcat -v threadtime -b radio -d",
-            "logcat -v threadtime -b events -d", "dmesg", "dumpsys power", "dumpsys alarm", "dumpsys battery", "dumpsys batteryinfo",
-            "dumpsys cpuinfo", "dumpsys meminfo", "dumpsys netpolicy", "dumpsys netstats --full --uid", "dumpsys SurfaceFlinger",
-            "dumpsys wifi", "dumpsys activity broadcasts", "dumpsys batterystats", "ps -t", "cat /sys/devices/platform/soc-audio.0/reg_program",
-            "cat /sys/fs/pstore/console-ramoops", "cat /sys/fs/pstore/dmesg-ramoops-0", "cat /sys/fs/pstore/dmesg-ramoops-1",
-            "cat /sys/fs/pstore/ftrace-ramoops", "cat /sys/class/charger_class/charger_device/dump_reg", "ping -c 2 61.147.106.32", "ping -c 2 "};
 
     @Override
     public void onCreate() {
@@ -67,7 +60,7 @@ public class LogcatService extends Service {
                         continue;
                     if (line.contains(": Process: ")) {
                         Log.i(Constant.TAG, "process：" + line);
-                        if (!line.contains("com.meizu.apptest") && !reader.readLine().contains("is package not installed")) {
+                        if (!line.contains("com.meizu.apptest") && !reader.readLine().contains("is package not installed")) {//根据邓鑫要求，这种crash的log过滤掉
                             String str = line.substring(line.indexOf(": Process: ") + 11);
                             str = str.substring(0, str.indexOf(", PID:"));
                             filename = "Crash_" + str + "_" + new SimpleDateFormat("yyyyMMddmmss").format(new Date());
@@ -118,14 +111,14 @@ public class LogcatService extends Service {
         String filePath2 = "  >> " + pathStr + "/AutoTest/image/" + filename + ".txt";
         savefirst();
         String cmdstr = "";
-        for (int i = 0; i < runcommand.length; i++) {
-            if (runcommand[i].contains("logcat")) {
-                savefile(runcommand[i]);
-                cmdstr = runcommand[i] + filePath1;
+        for (int i = 0; i < Constant.runcommand.length; i++) {
+            if (Constant.runcommand[i].contains("logcat")) {
+                savefile(Constant.runcommand[i]);
+                cmdstr = Constant.runcommand[i] + filePath1;
                 ShellUtils.execCommand(cmdstr, false, true);
             } else {
-                savefile(runcommand[i]);
-                cmdstr = runcommand[i] + filePath2;
+                savefile(Constant.runcommand[i]);
+                cmdstr = Constant.runcommand[i] + filePath2;
                 ShellUtils.execCommand(cmdstr, false, true);
             }
         }
@@ -139,8 +132,8 @@ public class LogcatService extends Service {
             out.write("***********************************************\r\n");
             out.write("\r\n");
             out.write("commands that this app will run :\r\n");
-            for (int i = 0; i < runcommand.length; i++) {
-                out.write(runcommand[i] + "\r\n");
+            for (int i = 0; i < Constant.runcommand.length; i++) {
+                out.write(Constant.runcommand[i] + "\r\n");
             }
             out.write("\r\n");
             out.write("***********************************************\r\n");

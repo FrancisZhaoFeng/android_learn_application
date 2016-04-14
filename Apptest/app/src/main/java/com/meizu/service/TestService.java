@@ -113,7 +113,7 @@ public class TestService extends Service {
         }
         //启动google安装器（并点击安装）；启动静音工具；
         ShellUtils.execCommand("am startservice com.jacky.permanent/com.jacky.permanent.MyService", false);
-        if(!ApkHandleUtil.isInstalledApk(mContext,"com.google.android.gms")){
+        if (!ApkHandleUtil.isInstalledApk(mContext, "com.google.android.gms")) {
             ShellUtils.execCommand("am start -n com.howie.gserverinstall/com.howie.gserverinstall.ui.MainActivity", false);
             ApkHandleUtil.sleep(1000);
             ShellUtils.execCommand("input  tap 540 1560", false);
@@ -155,7 +155,7 @@ public class TestService extends Service {
      */
     private void waitIOFinish(String info) {
         Long startTime = System.currentTimeMillis();
-        while ((!Constant.installFinish || !Constant.uninstallFinish) && System.currentTimeMillis() - startTime < 18 * 60 * 1000) { //安装完一个才能安装下一个，18分钟后不进行等待
+        while ((!Constant.installFinish || !Constant.uninstallFinish) && System.currentTimeMillis() - startTime < 18 * 60 * 1000) { //安装完一个才能安装下一个，18分钟后不进行等待，防止死循环
             try {
                 Thread.sleep(2 * 1000);
             } catch (InterruptedException e) {
