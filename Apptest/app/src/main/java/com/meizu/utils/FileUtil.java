@@ -73,7 +73,7 @@ public class FileUtil {
         }
     }
 
-    public static void getFileListAndInsert(String apkPath, Context context) {
+    public static void getFileListAndInsertDB(String apkPath, Context context) {
         File file = new File(apkPath);
         String fileNames[] = file.list();
         if (!file.exists() || fileNames == null) {//判断文件夹是否存在 和 文件夹中是否有apk
@@ -102,8 +102,11 @@ public class FileUtil {
 
     private static ApkTestInfoBean fileNameToApkBean(String name) {
         int sn = Integer.parseInt(name.substring(0, name.indexOf("_")));
-        String packName = name.substring(name.indexOf("_") + 1, name.lastIndexOf("_v"));
-        String apkVersion = name.substring(name.lastIndexOf("_v") + 1, name.length() - 4);
+        String packName = "", apkVersion = "";
+        if (name.lastIndexOf("_v") != -1) {
+            packName = name.substring(name.indexOf("_") + 1, name.lastIndexOf("_v"));
+            apkVersion = name.substring(name.lastIndexOf("_v") + 1, name.length() - 4);
+        }
         return new ApkTestInfoBean(sn, packName, apkVersion, name);
     }
 

@@ -17,11 +17,14 @@ import com.meizu.beans.UserHabitBean;
 import com.meizu.common.Constant;
 import com.meizu.report.HtmlOut;
 import com.meizu.service.TestService;
+import com.meizu.utils.DBUtil;
 import com.meizu.utils.ShellUtils;
 
 import org.litepal.LitePalApplication;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     EditText edtPath;
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fabStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e(Constant.TAG,"暂停：am force-stop com.meizu.apptest");
+                Log.e(Constant.TAG, "暂停：am force-stop com.meizu.apptest");
                 ShellUtils.execCommand("am force-stop com.meizu.apptest", false);
             }
         });

@@ -15,11 +15,8 @@ import java.util.Map;
  */
 public class DBUtil {
 
-    public static List<ApkTestInfoBean> checkDBByStatus(String status) {
-        List<ApkTestInfoBean> apkTestInfoBeanList = DataSupport.where("status like ?", status).find(ApkTestInfoBean.class);
-//        for (ApkTestInfoBean apkTestInfoBean : apkTestInfoBeanList) {
-//            Log.i(Constant.TAG, "checkDBByStatus:" + apkTestInfoBean.toString());
-//        }
+    public static List<ApkTestInfoBean> checkDBByStatus(String keyword, String status) {
+        List<ApkTestInfoBean> apkTestInfoBeanList = DataSupport.where(keyword, status).find(ApkTestInfoBean.class);
         return apkTestInfoBeanList;
     }
 
@@ -34,7 +31,7 @@ public class DBUtil {
         return phoneTestInfoBean;
     }
 
-    public static void saveStatus(ApkTestInfoBean apkTestInfoBean){
+    public static void saveStatus(ApkTestInfoBean apkTestInfoBean) {
         //更新表数据
         ApkTestInfoBean apkTestInfoBeanTemp = new ApkTestInfoBean();
         apkTestInfoBeanTemp.setStatus(apkTestInfoBean.getStatus());

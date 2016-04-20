@@ -63,8 +63,9 @@ public class TestService extends Service {
         Log.i(Constant.TAG, "this is service onStartCommand");
         setData(intent);//保存intent传过来的值
         initialize(); //保存context；安装应用：meizuuser，静音工具，google框架；初始化变量；创建文件夹；启动google，静音工具；启动logcat服务
-        apkThread.start();
-//        testThread.start();
+        threadApk.start();
+        threadPush.start();
+//        threadTest.start();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -145,7 +146,8 @@ public class TestService extends Service {
     };
 
     private void destroy() {
-        //aidl解绑，关闭静音服务和本服务
+        //关闭静音服务和本服务
+        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 1780001);// 设置屏幕显示时间，与平台结合是用到，标志测试的结束，便于伟杰那边检测
         ShellUtils.execCommand("am force-stop com.jacky.permanent", false);
         ShellUtils.execCommand("am force-stop com.meizu.apptest", false);
     }
@@ -155,7 +157,7 @@ public class TestService extends Service {
      */
     private void waitIOFinish(String info) {
         Long startTime = System.currentTimeMillis();
-        while ((!Constant.installFinish || !Constant.uninstallFinish) && System.currentTimeMillis() - startTime < 18 * 60 * 1000) { //安装完一个才能安装下一个，18分钟后不进行等待，防止死循环
+        while ((!Constant.installFinish || !Constant.uninstallFinish) && System.currentTimeMillis() - startTime < 13 * 60 * 1000) { //安装完一个才能安装下一个，18分钟后不进行等待，防止死循环
             try {
                 Thread.sleep(2 * 1000);
             } catch (InterruptedException e) {
@@ -165,28 +167,63 @@ public class TestService extends Service {
         }
     }
 
-    Thread testThread = new Thread(new Runnable() {
+    Thread threadTest = new Thread(new Runnable() {
         @Override
         public void run() {
-            int i = 0;
-            while (i < 10) {
+            List<ApkTestInfoBean> apkTestInfoBeanList = new ArrayList<>();
+            ApkTestInfoBean apkTestInfoBean;
+            for (int i = 0; i < 100; i++) {
+                apkTestInfoBean = new ApkTestInfoBean(i, "com.test.testapk" + i, "v123." + i, i + "_com.test.testapk" + i + "_v123." + i + ".apk", Constant.status[4]);
+                apkTestInfoBeanList.add(apkTestInfoBean);
+                apkTestInfoBean.save();
+            }
+            int num = 0;
+            while (num < 100) {
                 try {
-                    testThread.sleep(1000);
-                    Log.i(Constant.TAG, "testThread：" + (i++));
+                    threadTest.sleep(5 * 60 * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                apkTestInfoBean = apkTestInfoBeanList.get(num);
+                apkTestInfoBean.setStatus(Constant.status[3]);
+                Log.i(Constant.TAG, "改变状态后的apk：" + apkTestInfoBean.toString());
+                DBUtil.saveStatus(apkTestInfoBean);//数据库中保存安装状态
+                num++;
             }
-            stopSelf();
+            Log.i(Constant.TAG, "改变数据线程已结束");
         }
     });
 
-    Thread apkThread = new Thread(new Runnable() {
+    Thread threadPush = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            int apkNum = 0;
+            int lastNum = 0;
+            while (true) {
+                try {
+                    threadPush.sleep(8 * 60 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                int tempNum = DataSupport.where("status not like ?", Constant.status[4]).count(ApkTestInfoBean.class);
+                apkNum = tempNum - lastNum;
+                Log.i(Constant.TAG, "目前已测试数：" + tempNum + "，上一次apk数：" + lastNum + "，发送数据(相减)：" + apkNum);
+                //发送广播让MeizuPush apk 发送数据给服务器
+                Intent lIntent = new Intent("com.meizu.basic.flyme5");
+                lIntent.putExtra("appTest", String.valueOf(apkNum));
+                sendBroadcast(lIntent);
+                //修改状态值
+                lastNum = tempNum;
+            }
+        }
+    });
+
+    Thread threadApk = new Thread(new Runnable() {
         @Override
         public void run() {
             Constant.userHabitBean = DataSupport.findLast(UserHabitBean.class);//获取用户最新习惯数据
-            FileUtil.getFileListAndInsert(Constant.userHabitBean.getFilePath(), mContext);//遍历 apk文件路径，并且读取apk信息和保存到数据库，花时间比较长
-            List<ApkTestInfoBean> apkTestInfoBeanList = DBUtil.checkDBByStatus(Constant.status[4]);//将数据库中noTest的status过滤出来进行测试
+            FileUtil.getFileListAndInsertDB(Constant.userHabitBean.getFilePath(), mContext);//遍历 apk文件路径，并且读取apk信息和保存到数据库，花时间比较长
+            List<ApkTestInfoBean> apkTestInfoBeanList = DataSupport.where("status like ?", Constant.status[4]).find(ApkTestInfoBean.class); //将数据库中noTest的status过滤出来进行测试
             Collections.sort(apkTestInfoBeanList);//排序
             Log.i(Constant.TAG, "需要测试的apk个数：" + apkTestInfoBeanList.size() + "，" + Constant.userHabitBean.toString());
             //核心代码段
@@ -195,7 +232,7 @@ public class TestService extends Service {
                 //根据count值来执行一批的测试数量
                 ShellUtils.execCommand("input keyevent 3", false);//回到桌面
                 ShellUtils.execCommand("input swipe 1000 500 10 500", false);//回到桌面
-                List<ApkTestInfoBean> apkCounts = apkTestInfoBeanList.subList(index * Constant.userHabitBean.getCount(), apkTestInfoBeanList.size() > (index + 1) * Constant.userHabitBean.getCount() ? (index + 1) * Constant.userHabitBean.getCount() : apkTestInfoBeanList.size());
+                List<ApkTestInfoBean> apkCounts = apkTestInfoBeanList.subList(index * Constant.userHabitBean.getCount(), apkTestInfoBeanList.size() > (index + 1) * Constant.userHabitBean.getCount() ? (index + 1) * Constant.userHabitBean.getCount() : apkTestInfoBeanList.size());//这是一个需要时间研究的算法
                 for (ApkTestInfoBean apkCount : apkCounts) {
                     waitIOFinish("install");
                     Constant.curTestApk = apkCount;//全局，便于反射类中访问
