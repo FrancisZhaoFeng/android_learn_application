@@ -244,19 +244,26 @@ public class ApkHandleUtil {
         }
     }
 
+    private static List<PackageInfo> getPackageInfoList(Context context) {
+        PackageManager pManager = context.getPackageManager();
+        return pManager.getInstalledPackages(0);
+    }
+
     public static boolean isInstalledApk(Context context, String packageName) {
         PackageManager pManager = context.getPackageManager();
         List<PackageInfo> appList = pManager.getInstalledPackages(0);
         boolean isInstall = false;
+        System.out.println(appList.size());
         for (int i = 0; i < appList.size(); i++) {
             PackageInfo pak = appList.get(i);
             String mPak = pak.packageName;
+            System.out.println(mPak);
             if (mPak.contains(packageName)) {
                 isInstall = true;
                 break;
             }
         }
-        Log.i(Constant.TAG, "已安装（谷歌框架、服务、商店）："+isInstall);
+        Log.i(Constant.TAG, "已安装（谷歌框架、服务、商店）：" + isInstall);
         return isInstall;
     }
 }

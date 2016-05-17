@@ -31,14 +31,14 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
 
-//		registerReceiver(new SreenSB(), new IntentFilter(Intent.ACTION_SCREEN_ON));
-//		registerReceiver(new SreenSB(), new IntentFilter(Intent.ACTION_SCREEN_OFF));
+		// registerReceiver(new SreenSB(), new IntentFilter(Intent.ACTION_SCREEN_ON));
+		// registerReceiver(new SreenSB(), new IntentFilter(Intent.ACTION_SCREEN_OFF));
 
-//		IntentFilter screenStateFilter = new IntentFilter();
-//		screenStateFilter.addAction(Intent.ACTION_SCREEN_ON);
-//		screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
-//		registerReceiver(SreenSB, screenStateFilter);
-		
+		// IntentFilter screenStateFilter = new IntentFilter();
+		// screenStateFilter.addAction(Intent.ACTION_SCREEN_ON);
+		// screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
+		// registerReceiver(SreenSB, screenStateFilter);
+
 		btnNormal = (Button) this.findViewById(R.id.btn_intent_normal);
 		btnContact = (Button) this.findViewById(R.id.btn_intent_contact);
 		btnHome = (Button) this.findViewById(R.id.btn_intent_home);

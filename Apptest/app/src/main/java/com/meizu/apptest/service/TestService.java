@@ -66,7 +66,7 @@ public class TestService extends Service {
         threadApk.start();
         threadPush.start();
 //        threadTest.start();
-        return super.onStartCommand(intent, flags, startId);
+        return super.onStartCommand(intent, flags, startId);  //当遇到一键root，鲁大师等工具时，apptest被kill掉，会自动重启，初始化数据保存在数据库中
     }
 
     @Override
@@ -141,7 +141,6 @@ public class TestService extends Service {
                 wl.release();
                 ShellUtils.execCommand("input swipe 500 1300 500 100", false);
             }
-
         }
     };
 

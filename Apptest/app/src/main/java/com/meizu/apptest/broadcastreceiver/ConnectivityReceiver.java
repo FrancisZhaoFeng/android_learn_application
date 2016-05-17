@@ -47,7 +47,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     Thread threadCon = new Thread(new Runnable() {
         @Override
         public void run() {
-            connectWifiUtil.connectOnlyOneWifi("MZ-MEIZU-5G", "atsms", "autotest123@123", ConnectWifiUtil.WifiCipherType.WIFICIPHER_WPA_EAP);
+            connectWifiUtil.connectOnlyOneWifi("MZ-Inweb-Test", "", "Inweb@meizu.com", ConnectWifiUtil.WifiCipherType.WIFICIPHER_WPA);
         }
     });
 }

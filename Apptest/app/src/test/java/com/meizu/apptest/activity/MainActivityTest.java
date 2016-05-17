@@ -1,25 +1,41 @@
 package com.meizu.apptest.activity;
 
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+
 import com.meizu.apptest.BuildConfig;
+import com.meizu.apptest.R;
+import com.meizu.apptest.common.Constant;
+import com.meizu.apptest.testUtils.ShadowTestRun;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowToast;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-
+import static com.meizu.apptest.R.id;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Created by zhaoguofeng on 2016/4/22.
+ * Created by zhaoguofeng on 2016/5/4.
  */
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(ShadowTestRun.class)
+@Config(constants = BuildConfig.class, sdk = 21, shadows = {ShadowConnector.class})
 public class MainActivityTest {
     private MainActivity mainActivity;
+    private EditText edtPath;
+    private EditText edtCount;
+    private RelativeLayout rlMonkey;
+    private RadioButton rdbYes;
+    private RadioButton rdbNo;
+    private EditText edtMonkeyTime;
+    private ImageButton imgbReport;
+    private ImageButton imgbDelete;
 
     @Before
     public void setUp() {
@@ -27,9 +43,32 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testActivity() {
-        MainActivity mainActivity = Robolectric.setupActivity(MainActivity.class);
-        assertNotNull(mainActivity);
-        assertEquals(mainActivity.getTitle(), "3wApptest");
+    public void testOnCreate() throws Exception {
+        assertTrue(ShadowConnector.flag);
+    }
+
+    @Test
+    public void testOnClick_myes_monkeyVisibility() throws Exception {
+        rdbYes = (RadioButton) mainActivity.findViewById(id.rb_myes);
+        rlMonkey = (RelativeLayout) mainActivity.findViewById(id.rl_monkey);
+        rdbYes.performClick();
+        assertEquals(0,rlMonkey.getVisibility());
+    }
+
+    @Test
+    public void testOnClick_mno_monkeyVisibility() throws Exception {
+        rdbYes = (RadioButton) mainActivity.findViewById(id.rb_mno);
+        rlMonkey = (RelativeLayout) mainActivity.findViewById(id.rl_monkey);
+        rdbYes.performClick();
+        assertEquals(8,rlMonkey.getVisibility());
+    }
+
+    @Test
+    public void testOnClick_report_creatHtml() throws Exception {
+        imgbReport= (ImageButton) mainActivity.findViewById(id.imgb_report);
+        imgbReport.performClick();
+
+//        System.out.println( ShadowToast.getLatestToast().toString());
+//        assertEquals( "生成成功，路径：", ShadowToast.getLatestToast().toString());
     }
 }

@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.DEVICE_POWER"/>
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.meizu.apptest.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -37,40 +37,43 @@
         </activity>
 
         <service
-            android:name="com.meizu.service.MonkeyTestService"
+            android:name="com.meizu.apptest.service.MonkeyTestService"
             android:enabled="true"
             android:exported="true"
             android:process=":remote"></service>
         <service
-            android:name="com.meizu.service.TestService"
+            android:name="com.meizu.apptest.service.TestService"
             android:exported="true"
             android:persistent="true"
             android:process=":remote"></service>
+        <service
+            android:name="com.meizu.apptest.service.DeleteDBService"
+            android:exported="true"></service>
 
-        <receiver android:name="com.meizu.broadcastreceiver.ConnectivityReceiver">
+        <receiver android:name="com.meizu.apptest.broadcastreceiver.ConnectivityReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
+
         <service
-            android:name="com.meizu.service.OnAccessibilityService"
+            android:name="com.meizu.apptest.service.OnAccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService"/>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility_service_config"/>
+                android:resource="@xml/accessibility_service_config" />
         </service>
         <service
-            android:name="com.meizu.service.LogcatService"
+            android:name="com.meizu.apptest.service.LogcatService"
             android:enabled="true"
             android:exported="true"
-            android:process=":remote" >
-        </service>
+            android:process=":remote"></service>
     </application>
 
 </manifest>

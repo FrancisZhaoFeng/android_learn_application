@@ -25,16 +25,16 @@ import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText edtPath;
-    EditText edtCount;
-    RelativeLayout rlMonkey;
-    RadioButton rdbYes;
-    RadioButton rdbNo;
-    EditText edtMonkeyTime;
-    ImageButton imgbReport;
-    ImageButton imgbDelete;
+    private EditText edtPath;
+    private EditText edtCount;
+    private RelativeLayout rlMonkey;
+    private RadioButton rdbYes;
+    private RadioButton rdbNo;
+    private EditText edtMonkeyTime;
+    private ImageButton imgbReport;
+    private ImageButton imgbDelete;
 
-    UserHabitBean userHabitBean = new UserHabitBean();
+    private UserHabitBean userHabitBean = new UserHabitBean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
